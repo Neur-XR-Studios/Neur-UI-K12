@@ -4,436 +4,439 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Collections;
-
-public class UIAutomationController : MonoBehaviour
+namespace Neur.UI
 {
-    #region Headers
-    [Space(10)]
-    [Header("----------------------UI REFERENCES--------------------")]
-    [Space(10)]
-    [Header("Landing Menu")]
-    [Space(10)]
-    public GameObject LandingMenu_Obj;
-    [Space(10)]
-    public TMP_Text MainInfo_Text;
-    [Space(10)]
-    public Image Icon_Img;
-    [Space(20)]
-    [Header("Activity Page")]
-    [Space(10)]
-    public GameObject ActivityMenu_Obj;
-    [Space(10)]
-    public TMP_Text ActivityHeading_Text;
-    [Space(20)]
-    [Header("Welcome Page")]
-    [Space(10)]
-    public GameObject WelcomeMenu_Obj;
-    [Space(10)]
-    public TMP_Text WelcomeHeading_Text;
-    [Space(10)]
-    public TMP_Text Welcome_Text;
-    [Space(10)]
-    public Image WelcomePageIcon_Img;
-    [Space(20)]
-    [Header("CF Page")]
-    [Space(10)]
-    public GameObject CfMenu_Obj;
-    [Space(10)]
-    public TMP_Text ObjectInfo_Text;
-    [Space(10)]
-    public Image ObjectIcon_Img;
-    [Space(20)]
-    [Header("Prompt Menu")]
-    [Space(10)]
-    public GameObject PromptMenu_Obj;
-    [Space(10)]
-    public TMP_Text PromptInfo_Text;
-    [Space(10)]
-    public Button Ok_button;
-    
-    [Space(20)]
-    [Header("Step Content Scroll")]
-    [Space(10)]
-    public GameObject mainStepContainer;
-    [Space(10)]
-    public GameObject  subStepContainer;
-    [Space(10)]
-    public Transform StepContainer;
-    [Space(10)]
-    public TMP_Text StepInfo_Text;
-    [Space(10)]
-    public TMP_Text MainStepTittle;
-    [Space(10)]
-    public TMP_Text subStepTittle;
-    [Space(20)]
-    [Header("Conclusion panel")]
-    [Space(10)]
-    public GameObject Conclusion_Panel;
-    [Space(20)]
-    [Header("Step Content Scroll")]
-    [Space(10)]
-    public List<GameObject> subSteps;
-    [Space(10)]
-    [Header("---------------CF OBJECT INSTANCE---------------")]
-    [Space(10)]
-    public GameObject[] CF_Objects; // Array of GameObjects where prefabs should spawn    
-    [Space(10)]
-    public GameObject DevParent_Object; // Parent of all development objects in scene
-    [Space(10)]
-    public GameObject CFParent_Object; // Object refernce for making prefab as child of it
-    [Space(10)]
-    public Button CF_Button;
-
-
-    private bool IsActivity = true; // To find activity scene or CF scene 
-    private bool Is_CF_Holded = false; // To find activity scene or CF scene 
-    private string ModuleName = string.Empty;
-
-    public static List<string> Colunm_03 = new(); // main step content in the CSV
-    public static List<string> Colunm_04 = new();// sub step content in the CSV
-
-    public static List<string> objectNames = new();
-    public static List<string> objectInfos = new();
-    public static List<string> objectIconNames = new();
-    #endregion
-
-    private enum PANEL_TYPE
+    public class UIAutomationController : MonoBehaviour
     {
-        LANDING,
-        WELCOME,
-        ACTIVITY
-    }
-    private PANEL_TYPE PanelType;
+        #region Headers
+        [Space(10)]
+        [Header("----------------------UI REFERENCES--------------------")]
+        [Space(10)]
+        [Header("Landing Menu")]
+        [Space(10)]
+        public GameObject LandingMenu_Obj;
+        [Space(10)]
+        public TMP_Text MainInfo_Text;
+        [Space(10)]
+        public Image Icon_Img;
+        [Space(20)]
+        [Header("Activity Page")]
+        [Space(10)]
+        public GameObject ActivityMenu_Obj;
+        [Space(10)]
+        public TMP_Text ActivityHeading_Text;
+        [Space(20)]
+        [Header("Welcome Page")]
+        [Space(10)]
+        public GameObject WelcomeMenu_Obj;
+        [Space(10)]
+        public TMP_Text WelcomeHeading_Text;
+        [Space(10)]
+        public TMP_Text Welcome_Text;
+        [Space(10)]
+        public Image WelcomePageIcon_Img;
+        [Space(20)]
+        [Header("CF Page")]
+        [Space(10)]
+        public GameObject CfMenu_Obj;
+        [Space(10)]
+        public TMP_Text ObjectInfo_Text;
+        [Space(10)]
+        public Image ObjectIcon_Img;
+        [Space(20)]
+        [Header("Prompt Menu")]
+        [Space(10)]
+        public GameObject PromptMenu_Obj;
+        [Space(10)]
+        public TMP_Text PromptInfo_Text;
+        [Space(10)]
+        public Button Ok_button;
 
-    #region Initialization
-    private void Start()
-    {
-        Initialisation();
-    }
-    void Initialisation()
-    {
-        PanelType = PANEL_TYPE.LANDING;
-        EnableLandingMenu();
-        Colunm_03.Clear();
-        Colunm_04.Clear();
+        [Space(20)]
+        [Header("Step Content Scroll")]
+        [Space(10)]
+        public GameObject mainStepContainer;
+        [Space(10)]
+        public GameObject subStepContainer;
+        [Space(10)]
+        public Transform StepContainer;
+        [Space(10)]
+        public TMP_Text StepInfo_Text;
+        [Space(10)]
+        public TMP_Text MainStepTittle;
+        [Space(10)]
+        public TMP_Text subStepTittle;
+        [Space(20)]
+        [Header("Conclusion panel")]
+        [Space(10)]
+        public GameObject Conclusion_Panel;
+        [Space(20)]
+        [Header("Step Content Scroll")]
+        [Space(10)]
+        public List<GameObject> subSteps;
+        [Space(10)]
+        [Header("---------------CF OBJECT INSTANCE---------------")]
+        [Space(10)]
+        public GameObject[] CF_Objects; // Array of GameObjects where prefabs should spawn    
+        [Space(10)]
+        public GameObject DevParent_Object; // Parent of all development objects in scene
+        [Space(10)]
+        public GameObject CFParent_Object; // Object refernce for making prefab as child of it
+        [Space(10)]
+        public Button CF_Button;
 
-        objectNames.Clear();
-        objectInfos.Clear();
-        objectIconNames.Clear();
 
+        private bool IsActivity = true; // To find activity scene or CF scene 
+        private bool Is_CF_Holded = false; // To find activity scene or CF scene 
+        private string ModuleName = string.Empty;
 
-        DevParent_Object.SetActive(false);
-        CFParent_Object.SetActive(false);
+        public static List<string> Colunm_03 = new(); // main step content in the CSV
+        public static List<string> Colunm_04 = new();// sub step content in the CSV
 
-        Ok_button.onClick.AddListener(OkButtonClickHandler);
-        CF_Button.onClick.AddListener(CFButtonClickHandler);
-        MainInfo_Text.text = string.Empty;
-        ActivityHeading_Text.text = string.Empty;
-    }
-    #endregion
+        public static List<string> objectNames = new();
+        public static List<string> objectInfos = new();
+        public static List<string> objectIconNames = new();
+        #endregion
 
-    #region UI Controller
-    void EnableLandingMenu()
-    {
-        ResetAllMenu();
-        LandingMenu_Obj.SetActive(true);
-    }
-    void EnableActivityMenu()
-    {
-        ResetAllMenu();
-        ActivityMenu_Obj.SetActive(true);
-    }
-    void EnableWelcomeMenu()
-    {
-        ResetAllMenu();
-        WelcomeMenu_Obj.SetActive(true);
-    }
-    void EnableCFMenu()
-    {
-        ResetAllMenu();
-        CfMenu_Obj.SetActive(true);
-    }
-    void EnablePromptMenu()
-    {
-        PromptMenu_Obj.SetActive(true);
-        PromptInfo_Text.text = DataManager.StaticVariables.COLUMN_02;
-    }
-    void EnableConclusionPanel()
-    {
-        ResetAllMenu();
-        Conclusion_Panel.SetActive(true);
-    }
-    void ResetAllMenu()
-    {
-        WelcomeMenu_Obj.SetActive(false);
-        LandingMenu_Obj.SetActive(false);
-        ActivityMenu_Obj.SetActive(false);
-        CfMenu_Obj.SetActive(false);
-        LandingMenu_Obj.SetActive(false);
-    }
-    #endregion
-
-    #region UI Content Updation
-    void UpdateText()
-    {
-        MainStepContentChanger();
-        switch (PanelType)
+        private enum PANEL_TYPE
         {
-            case PANEL_TYPE.LANDING:
-                {
-                    UpdateMainMenuText();
-                    UpdateStepDataMenuText();
-                    PanelType = PANEL_TYPE.WELCOME;
-                    return;
-                }
-            case PANEL_TYPE.WELCOME:
-                {
-                    UpdateWelcomeMenu();
-                    UpdateActivityMenuText();
-                    PanelType = PANEL_TYPE.ACTIVITY;
-                    return;
-                }
-            case PANEL_TYPE.ACTIVITY:
-                {
-                    UpdateActivityMenuText();
-                    return;
-                }
-        }        
-    }
-    void UpdateMainMenuText()
-    {
-        //Update text
-        string content = DataManager.StaticVariables.COLUMN_04;
-        ModuleName = DataManager.StaticVariables.COLUMN_02;
-        MainInfo_Text.text = content;
-        ActivityHeading_Text.text = ModuleName;
-
-        //Update icon image
-        Icon_Img.sprite = Resources.Load<Sprite>("Images/Landing_Icon");
-    }
-    void UpdateWelcomeMenu()
-    {
-        string content = DataManager.StaticVariables.COLUMN_04;
-        Welcome_Text.text = content;
-        WelcomeHeading_Text.text = $"WELCOME TO THE \n{ModuleName.ToUpper()}";
-        WelcomePageIcon_Img.sprite = Resources.Load<Sprite>("Images/Welcome_Icon");
-        EnableWelcomeMenu();
-    }
-    void UpdateActivityMenuText()
-    {
-        string mainstep = DataManager.StaticVariables.COLUMN_03;
-        if(mainstep != string.Empty)
-        {
-            MainStepTittle.text = mainstep.ToUpper();
-
+            LANDING,
+            WELCOME,
+            ACTIVITY
         }
-        int stepcount = DataManager.StaticVariables.STEP_COUNT - 2;
-        StepInfo_Text.text = (stepcount+2) + "/" + subSteps.Count;
-        if (stepcount >= 0) 
-        {
-            GameObject substepCont = subSteps[stepcount];
-            Image tickImg = substepCont.transform.GetChild(2).GetComponent<Image>();
-            tickImg.enabled = true;
-        }
-    }
-    void MainStepContentChanger()
-    {
-        int stepcount = DataManager.StaticVariables.STEP_COUNT - 1;
-        if (stepcount < 0) { stepcount = 0; }
-        string mainstep = Colunm_03[stepcount ];
-        if (mainstep != string.Empty)
-        {
-            MainStepTittle.text = mainstep.ToUpper();
-        }
-        string substep = Colunm_04[stepcount];
-        if (substep != string.Empty)
-        {
-            subStepTittle.text = substep;
-        }
-    }
-    void UpdateCFObjectInfo_UI()
-    {
-        CfMenu_Obj.SetActive(true);
-        string objectName = DataManager.StaticVariables.CF_OBJECT_NAME;
-        int index = objectNames.IndexOf(objectName);
-        ObjectInfo_Text.text = objectInfos[index];
-        ObjectIcon_Img.sprite = Resources.Load<Sprite>($"Images/{objectIconNames[index].Trim()}"); //Update icon image
-    }
-    void UpdateCFContent()
-    {
-        StartCoroutine(PrepareCF());
-    }
-    IEnumerator PrepareCF()
-    {
-        string objectNameCSV = DataManager.StaticVariables.COLUMN_06; //Object names combined with commas string
-        string objectInfoCSV = DataManager.StaticVariables.COLUMN_07; //ObjectInfo names combined with commas string
-        string objectIconNameCSV = DataManager.StaticVariables.COLUMN_08; //Object icon names combined with commas string
+        private PANEL_TYPE PanelType;
 
-        List<string> objectNames = new List<string>();
-        List<string> objectInfos = new List<string>();
-        List<string> objectIconNames = new List<string>();
-
-        objectNames.AddRange(objectNameCSV.Split(','));
-        objectInfos.AddRange(objectInfoCSV.Split('*'));
-        objectIconNames.AddRange(objectIconNameCSV.Split(','));
-
-        UIAutomationController.objectNames = objectNames;
-        UIAutomationController.objectInfos = objectInfos;
-        UIAutomationController.objectIconNames = objectIconNames;
-
-        for (int i = 0; i < CF_Objects.Length; i++)
+        #region Initialization
+        private void Start()
         {
-            GameObject cfObject = CF_Objects[i];
-            cfObject.AddComponent<CFManager>();
-            TMP_Text textComponents = cfObject.GetComponentInChildren<TMP_Text>();
-            textComponents.text = objectNames[i];
+            Initialisation();
         }
-        yield return null; // Wait for the next frame to reduce load
-    }
-    void UpdateStepDataMenuText()
-    {
-        // Ensure both lists have the same count
-        if (Colunm_03.Count == Colunm_04.Count)
+        void Initialisation()
         {
-            for (int i = 0; i < Colunm_03.Count; i++)
+            PanelType = PANEL_TYPE.LANDING;
+            EnableLandingMenu();
+            Colunm_03.Clear();
+            Colunm_04.Clear();
+
+            objectNames.Clear();
+            objectInfos.Clear();
+            objectIconNames.Clear();
+
+
+            DevParent_Object.SetActive(false);
+            CFParent_Object.SetActive(false);
+
+            Ok_button.onClick.AddListener(OkButtonClickHandler);
+            CF_Button.onClick.AddListener(CFButtonClickHandler);
+            MainInfo_Text.text = string.Empty;
+            ActivityHeading_Text.text = string.Empty;
+        }
+        #endregion
+
+        #region UI Controller
+        void EnableLandingMenu()
+        {
+            ResetAllMenu();
+            LandingMenu_Obj.SetActive(true);
+        }
+        void EnableActivityMenu()
+        {
+            ResetAllMenu();
+            ActivityMenu_Obj.SetActive(true);
+        }
+        void EnableWelcomeMenu()
+        {
+            ResetAllMenu();
+            WelcomeMenu_Obj.SetActive(true);
+        }
+        void EnableCFMenu()
+        {
+            ResetAllMenu();
+            CfMenu_Obj.SetActive(true);
+        }
+        void EnablePromptMenu()
+        {
+            PromptMenu_Obj.SetActive(true);
+            PromptInfo_Text.text = DataManager.StaticVariables.COLUMN_02;
+        }
+        void EnableConclusionPanel()
+        {
+            ResetAllMenu();
+            Conclusion_Panel.SetActive(true);
+        }
+        void ResetAllMenu()
+        {
+            WelcomeMenu_Obj.SetActive(false);
+            LandingMenu_Obj.SetActive(false);
+            ActivityMenu_Obj.SetActive(false);
+            CfMenu_Obj.SetActive(false);
+            LandingMenu_Obj.SetActive(false);
+        }
+        #endregion
+
+        #region UI Content Updation
+        void UpdateText()
+        {
+            MainStepContentChanger();
+            switch (PanelType)
             {
-                // Instantiate Prefab03 if Colunm_03 entry is not empty
-                if (!string.IsNullOrEmpty(Colunm_03[i]))
-                {
-                    GameObject mainStepObj = Instantiate(mainStepContainer, Vector3.zero, Quaternion.identity, StepContainer);
-                    mainStepObj.name = "mainStep_" + i;  // Optional: Assign a name to the instance
-                                                         // Additional customization or setup for obj03 can be done here
-                    Transform contenttextObj = mainStepObj.transform.GetChild(0); // Use parentheses, not brackets
-
-                    // Optionally set the text of the textObj if it's a TMP_Text or Text component
-                    TMP_Text textComponent = contenttextObj.GetComponent<TMP_Text>();
-                    if (textComponent != null)
+                case PANEL_TYPE.LANDING:
                     {
-                        textComponent.text = Colunm_03[i].ToUpper(); // Set the text to the current step
+                        UpdateMainMenuText();
+                        UpdateStepDataMenuText();
+                        PanelType = PANEL_TYPE.WELCOME;
+                        return;
                     }
-                    else
+                case PANEL_TYPE.WELCOME:
                     {
-                        Debug.LogWarning("Text component not found on the child object.");
+                        UpdateWelcomeMenu();
+                        UpdateActivityMenuText();
+                        PanelType = PANEL_TYPE.ACTIVITY;
+                        return;
                     }
-                }
-
-                // Instantiate Prefab04 if Colunm_04 entry is not empty
-                if (!string.IsNullOrEmpty(Colunm_04[i]))
-                {
-                    GameObject subStepObj = Instantiate(subStepContainer, Vector3.zero, Quaternion.identity, StepContainer);
-                    subStepObj.name = "subStep_" + i;  // Optional: Assign a name to the instance
-                    subSteps.Add(subStepObj);
-                    Transform stepCont = subStepObj.transform.GetChild(1); // Use parentheses, not brackets
-                    TMP_Text stepContText = stepCont.GetComponent<TMP_Text>();
-                    Transform stepcount = subStepObj.transform.GetChild(0).GetChild(0); // Use parentheses, not brackets
-                    TMP_Text countText = stepcount.GetComponent<TMP_Text>();
-                    if (stepContText != null)
+                case PANEL_TYPE.ACTIVITY:
                     {
-                        stepContText.text = Colunm_04[i]; // Set the text to the current step
-                        countText.text = (1 + i).ToString() + ".";
+                        UpdateActivityMenuText();
+                        return;
                     }
-                    else
-                    {
-                        Debug.LogWarning("Text component not found on the child object.");
-                    }
-                }
             }
         }
-        else
+        void UpdateMainMenuText()
         {
-            Debug.LogError("Colunm_03 and Colunm_04 do not have the same count!");
+            //Update text
+            string content = DataManager.StaticVariables.COLUMN_04;
+            ModuleName = DataManager.StaticVariables.COLUMN_02;
+            MainInfo_Text.text = content;
+            ActivityHeading_Text.text = ModuleName;
+
+            //Update icon image
+            Icon_Img.sprite = Resources.Load<Sprite>("Images/Landing_Icon");
         }
-    }
-    #endregion    
-
-    #region Others
-    void CFButtonClickHandler()
-    {
-        if(!Is_CF_Holded)
+        void UpdateWelcomeMenu()
         {
-            AudioSource[] allAudioSources = FindObjectsOfType<AudioSource>();// Find all AudioSource components in the scene
-            if (IsActivity)
+            string content = DataManager.StaticVariables.COLUMN_04;
+            Welcome_Text.text = content;
+            WelcomeHeading_Text.text = $"WELCOME TO THE \n{ModuleName.ToUpper()}";
+            WelcomePageIcon_Img.sprite = Resources.Load<Sprite>("Images/Welcome_Icon");
+            EnableWelcomeMenu();
+        }
+        void UpdateActivityMenuText()
+        {
+            string mainstep = DataManager.StaticVariables.COLUMN_03;
+            if (mainstep != string.Empty)
             {
+                MainStepTittle.text = mainstep.ToUpper();
 
-                foreach (AudioSource audioSource in allAudioSources) // Loop through and stop each AudioSource
+            }
+            int stepcount = DataManager.StaticVariables.STEP_COUNT - 2;
+            StepInfo_Text.text = (stepcount + 2) + "/" + subSteps.Count;
+            if (stepcount >= 0)
+            {
+                GameObject substepCont = subSteps[stepcount];
+                Image tickImg = substepCont.transform.GetChild(2).GetComponent<Image>();
+                tickImg.enabled = true;
+            }
+        }
+        void MainStepContentChanger()
+        {
+            int stepcount = DataManager.StaticVariables.STEP_COUNT - 1;
+            if (stepcount < 0) { stepcount = 0; }
+            string mainstep = Colunm_03[stepcount];
+            if (mainstep != string.Empty)
+            {
+                MainStepTittle.text = mainstep.ToUpper();
+            }
+            string substep = Colunm_04[stepcount];
+            if (substep != string.Empty)
+            {
+                subStepTittle.text = substep;
+            }
+        }
+        void UpdateCFObjectInfo_UI()
+        {
+            CfMenu_Obj.SetActive(true);
+            string objectName = DataManager.StaticVariables.CF_OBJECT_NAME;
+            int index = objectNames.IndexOf(objectName);
+            ObjectInfo_Text.text = objectInfos[index];
+            ObjectIcon_Img.sprite = Resources.Load<Sprite>($"Images/{objectIconNames[index].Trim()}"); //Update icon image
+        }
+        void UpdateCFContent()
+        {
+            StartCoroutine(PrepareCF());
+        }
+        IEnumerator PrepareCF()
+        {
+            string objectNameCSV = DataManager.StaticVariables.COLUMN_06; //Object names combined with commas string
+            string objectInfoCSV = DataManager.StaticVariables.COLUMN_07; //ObjectInfo names combined with commas string
+            string objectIconNameCSV = DataManager.StaticVariables.COLUMN_08; //Object icon names combined with commas string
+
+            List<string> objectNames = new List<string>();
+            List<string> objectInfos = new List<string>();
+            List<string> objectIconNames = new List<string>();
+
+            objectNames.AddRange(objectNameCSV.Split(','));
+            objectInfos.AddRange(objectInfoCSV.Split('*'));
+            objectIconNames.AddRange(objectIconNameCSV.Split(','));
+
+            UIAutomationController.objectNames = objectNames;
+            UIAutomationController.objectInfos = objectInfos;
+            UIAutomationController.objectIconNames = objectIconNames;
+
+            for (int i = 0; i < CF_Objects.Length; i++)
+            {
+                GameObject cfObject = CF_Objects[i];
+                cfObject.AddComponent<CFManager>();
+                TMP_Text textComponents = cfObject.GetComponentInChildren<TMP_Text>();
+                textComponents.text = objectNames[i];
+            }
+            yield return null; // Wait for the next frame to reduce load
+        }
+        void UpdateStepDataMenuText()
+        {
+            // Ensure both lists have the same count
+            if (Colunm_03.Count == Colunm_04.Count)
+            {
+                for (int i = 0; i < Colunm_03.Count; i++)
                 {
-                    audioSource.Pause();
-                }
+                    // Instantiate Prefab03 if Colunm_03 entry is not empty
+                    if (!string.IsNullOrEmpty(Colunm_03[i]))
+                    {
+                        GameObject mainStepObj = Instantiate(mainStepContainer, Vector3.zero, Quaternion.identity, StepContainer);
+                        mainStepObj.name = "mainStep_" + i;  // Optional: Assign a name to the instance
+                                                             // Additional customization or setup for obj03 can be done here
+                        Transform contenttextObj = mainStepObj.transform.GetChild(0); // Use parentheses, not brackets
 
-                DevParent_Object.SetActive(false);
-                CFParent_Object.SetActive(true);
-                IsActivity = false;
-                VoiceoverControllerScript.isActivity = false;
+                        // Optionally set the text of the textObj if it's a TMP_Text or Text component
+                        TMP_Text textComponent = contenttextObj.GetComponent<TMP_Text>();
+                        if (textComponent != null)
+                        {
+                            textComponent.text = Colunm_03[i].ToUpper(); // Set the text to the current step
+                        }
+                        else
+                        {
+                            Debug.LogWarning("Text component not found on the child object.");
+                        }
+                    }
+
+                    // Instantiate Prefab04 if Colunm_04 entry is not empty
+                    if (!string.IsNullOrEmpty(Colunm_04[i]))
+                    {
+                        GameObject subStepObj = Instantiate(subStepContainer, Vector3.zero, Quaternion.identity, StepContainer);
+                        subStepObj.name = "subStep_" + i;  // Optional: Assign a name to the instance
+                        subSteps.Add(subStepObj);
+                        Transform stepCont = subStepObj.transform.GetChild(1); // Use parentheses, not brackets
+                        TMP_Text stepContText = stepCont.GetComponent<TMP_Text>();
+                        Transform stepcount = subStepObj.transform.GetChild(0).GetChild(0); // Use parentheses, not brackets
+                        TMP_Text countText = stepcount.GetComponent<TMP_Text>();
+                        if (stepContText != null)
+                        {
+                            stepContText.text = Colunm_04[i]; // Set the text to the current step
+                            countText.text = (1 + i).ToString() + ".";
+                        }
+                        else
+                        {
+                            Debug.LogWarning("Text component not found on the child object.");
+                        }
+                    }
+                }
             }
             else
             {
-
-                foreach (AudioSource audioSource in allAudioSources) // Loop through and stop each AudioSource
-                {
-                    audioSource.Play();
-                }
-
-                DevParent_Object.SetActive(true);
-                CFParent_Object.SetActive(false);
-                CfMenu_Obj.SetActive(false);
-                IsActivity = true;
-                VoiceoverControllerScript.isActivity = true;
+                Debug.LogError("Colunm_03 and Colunm_04 do not have the same count!");
             }
         }
+        #endregion
 
-        
-    }
-    void OkButtonClickHandler()
-    {
-        PromptMenu_Obj.SetActive(false);
-        EventManager.Broadcast(EVENTS.STEP);
-    }
-    #endregion
+        #region Others
+        void CFButtonClickHandler()
+        {
+            if (!Is_CF_Holded)
+            {
+                AudioSource[] allAudioSources = FindObjectsOfType<AudioSource>();// Find all AudioSource components in the scene
+                if (IsActivity)
+                {
 
-    #region Public Function
-    public void Quit()
-    {
-        #if UNITY_EDITOR
+                    foreach (AudioSource audioSource in allAudioSources) // Loop through and stop each AudioSource
+                    {
+                        audioSource.Pause();
+                    }
+
+                    DevParent_Object.SetActive(false);
+                    CFParent_Object.SetActive(true);
+                    IsActivity = false;
+                    VoiceoverControllerScript.isActivity = false;
+                }
+                else
+                {
+
+                    foreach (AudioSource audioSource in allAudioSources) // Loop through and stop each AudioSource
+                    {
+                        audioSource.Play();
+                    }
+
+                    DevParent_Object.SetActive(true);
+                    CFParent_Object.SetActive(false);
+                    CfMenu_Obj.SetActive(false);
+                    IsActivity = true;
+                    VoiceoverControllerScript.isActivity = true;
+                }
+            }
+
+
+        }
+        void OkButtonClickHandler()
+        {
+            PromptMenu_Obj.SetActive(false);
+            EventManager.Broadcast(EVENTS.STEP);
+        }
+        #endregion
+
+        #region Public Function
+        public void Quit()
+        {
+#if UNITY_EDITOR
             // Quit play mode in the Unity Editor
             UnityEditor.EditorApplication.isPlaying = false;
-        #else
+#else
             // Quit the application on all other platforms
             Application.Quit();
-        #endif
-    }
-    public void ChangeScene()
-    {
-        SceneManager.LoadScene(0);
+#endif
+        }
+        public void ChangeScene()
+        {
+            SceneManager.LoadScene(0);
+        }
+
+        public void Hold_CF()
+        {
+            Is_CF_Holded = true;
+        }
+        public void UnHold_CF()
+        {
+            Is_CF_Holded = false;
+        }
+        #endregion
+
+        #region Event Subscription Handler
+
+        private void OnEnable() //subribed on SPAW event
+        {
+            EventManager.AddHandler(EVENTS.UPDATE_UI, UpdateText);
+            EventManager.AddHandler(EVENTS.UPDATE_CF_UI, UpdateCFObjectInfo_UI);
+            EventManager.AddHandler(EVENTS.PROMPT, EnablePromptMenu);
+            EventManager.AddHandler(EVENTS.ENABLE_FINAL_UI, EnableConclusionPanel);
+            EventManager.AddHandler(EVENTS.SPAWN, UpdateCFContent);
+        }
+
+        private void OnDisable() //unsubribed from SPAW event
+        {
+            EventManager.RemoveHandler(EVENTS.UPDATE_UI, UpdateText);
+            EventManager.RemoveHandler(EVENTS.UPDATE_CF_UI, UpdateCFObjectInfo_UI);
+            EventManager.RemoveHandler(EVENTS.PROMPT, EnablePromptMenu);
+            EventManager.RemoveHandler(EVENTS.ENABLE_FINAL_UI, EnableConclusionPanel);
+            EventManager.RemoveHandler(EVENTS.SPAWN, UpdateCFContent);
+        }
+        #endregion
     }
 
-    public void Hold_CF()
-    {
-        Is_CF_Holded = true;
-    }
-    public void UnHold_CF()
-    {
-        Is_CF_Holded = false;
-    }
-    #endregion
-
-    #region Event Subscription Handler
-
-    private void OnEnable() //subribed on SPAW event
-    {
-        EventManager.AddHandler(EVENTS.UPDATE_UI, UpdateText);
-        EventManager.AddHandler(EVENTS.UPDATE_CF_UI, UpdateCFObjectInfo_UI);
-        EventManager.AddHandler(EVENTS.PROMPT, EnablePromptMenu);
-        EventManager.AddHandler(EVENTS.ENABLE_FINAL_UI, EnableConclusionPanel);
-        EventManager.AddHandler(EVENTS.SPAWN, UpdateCFContent);
-    }
-
-    private void OnDisable() //unsubribed from SPAW event
-    {
-        EventManager.RemoveHandler(EVENTS.UPDATE_UI, UpdateText);
-        EventManager.RemoveHandler(EVENTS.UPDATE_CF_UI, UpdateCFObjectInfo_UI);
-        EventManager.RemoveHandler(EVENTS.PROMPT, EnablePromptMenu);
-        EventManager.RemoveHandler(EVENTS.ENABLE_FINAL_UI, EnableConclusionPanel);
-        EventManager.RemoveHandler(EVENTS.SPAWN, UpdateCFContent);
-    }
-    #endregion
 }
