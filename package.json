@@ -10,7 +10,15 @@
     "UI",
     "sdk"
   ],
+
   "author": {
     "name": "Neur"
-  }
+  },
+  "samples": [
+    {
+      "displayName": "Sample Scene",
+      "description": "This is a sample scene demonstrating the core features of the package.",
+      "path": "Samples~/SampleScene"
+    }
+  ]
 }
