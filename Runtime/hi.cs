@@ -5,6 +5,8 @@ namespace Neur.UI
 {
     public class hi : MonoBehaviour
     {
+
+        public string Msg;
         // Start is called before the first frame update
         void Start()
         {
