@@ -12,17 +12,6 @@
   ],
   "author": {
     "name": "Neur"
-  },
-  "samples": [
-    {
-      "description": "This is a sample scene demonstrating the core features of the package.",
-      "displayName": "Sample Scene",
-      "path": "Samples~/SampleScene"
-    },
-    {
-      "displayName": "Sample prefabs",
-      "description": "This is a sample scene demonstrating the core features of the package.",
-      "path": "Assets/Prefabs"
-    }
-  ]
+  }
+ 
 }
