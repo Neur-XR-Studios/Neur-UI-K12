@@ -1,6 +1,6 @@
 {
   "name": "com.neur.ui",
-  "version": "1.0.2",
+  "version": "1.0.1",
   "displayName": "Neur UI",
   "description": "Neur UI",
   "unity": "2021.1",
@@ -12,12 +12,5 @@
   ],
   "author": {
     "name": "Neur"
-  },
-  "samples": [
-    {
-      "displayName": "Sample Scene",
-      "description": "This is a sample scene demonstrating the core features of the package.",
-      "path": "Samples~/SampleScene"
-    }
-  ]
+  }
 }
