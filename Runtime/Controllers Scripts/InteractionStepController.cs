@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine;
-namespace Neur.UI
-{
+
     public class InteractionStepController : MonoBehaviour
     {
         [Space(20)]
@@ -37,5 +36,3 @@ namespace Neur.UI
         }
         #endregion
     }
-
-}

@@ -1,8 +1,7 @@
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
-namespace Neur.UI
-{
+
     public class VoiceoverControllerScript : MonoBehaviour
     {
         [Space(10)]
@@ -98,4 +97,4 @@ namespace Neur.UI
         #endregion
     }
 
-}
+

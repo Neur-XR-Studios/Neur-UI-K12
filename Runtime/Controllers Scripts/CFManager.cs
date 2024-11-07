@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-namespace Neur.UI
-{
+
     public class CFManager : MonoBehaviour
     {
         void EnableChildGameObject(string childName)
@@ -68,5 +67,3 @@ namespace Neur.UI
             EnableChildGameObject("NameCanvas");
         }
     }
-
-}

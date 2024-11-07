@@ -4,8 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Collections;
-namespace Neur.UI
-{
+
     public class UIAutomationController : MonoBehaviour
     {
         #region Headers
@@ -439,4 +438,4 @@ namespace Neur.UI
         #endregion
     }
 
-}
+
