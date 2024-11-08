@@ -1,12 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-namespace RedScarf.EasyCSV
+namespace K12.UI
 {
-    /// <summary>
-    /// csv表格坐标（行，列）
-    /// </summary>
     public struct CsvTableCoords
     {
         public int row;
@@ -24,4 +20,5 @@ namespace RedScarf.EasyCSV
             this.column = column;
         }
     }
+
 }

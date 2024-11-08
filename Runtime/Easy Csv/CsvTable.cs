@@ -4,12 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-
-namespace RedScarf.EasyCSV
+namespace K12.UI
 {
-    /// <summary>
-    /// 单张csv表
-    /// </summary>
     public sealed class CsvTable
     {
         public const char DEFAULT_SEPARATOR = ',';                              //默认分隔符
@@ -60,13 +56,13 @@ namespace RedScarf.EasyCSV
         /// <param m_Name="data">数据</param>
         /// <param m_Name="resolveColumnName">是否解析列名</param>
         /// <param m_Name="firstColumnIsID">第一列是否为id列</param>
-        public CsvTable(string name, string data,bool resolveColumnName,bool firstColumnIsID)
+        public CsvTable(string name, string data, bool resolveColumnName, bool firstColumnIsID)
         {
             m_Name = name;
             m_FirstColumnIsID = firstColumnIsID;
             m_ResolveColumnName = resolveColumnName;
             m_RawDataList = new List<List<string>>(DEFAULT_ROW_COUNT);
-            stringBuilder = new StringBuilder(DEFAULT_COLUMN_COUNT* DEFAULT_ROW_COUNT);
+            stringBuilder = new StringBuilder(DEFAULT_COLUMN_COUNT * DEFAULT_ROW_COUNT);
             columnNameDict = new Dictionary<string, int>(DEFAULT_COLUMN_COUNT);
             rowIdDict = new Dictionary<string, int>(DEFAULT_ROW_COUNT);
 
@@ -81,13 +77,13 @@ namespace RedScarf.EasyCSV
         /// <param name="row"></param>
         void ResolveRowID(int row)
         {
-            if (row < 0||row>=m_RawDataList.Count) return;
+            if (row < 0 || row >= m_RawDataList.Count) return;
 
             var idValue = Read(row, 0);
             if (!string.IsNullOrEmpty(idValue))
             {
                 rowIdDict.Remove(idValue);
-                rowIdDict.Add(idValue,row);
+                rowIdDict.Add(idValue, row);
             }
         }
 
@@ -176,14 +172,14 @@ namespace RedScarf.EasyCSV
         /// <param m_Name="row"></param>
         /// <param m_Name="columnName">列名</param>
         /// <returns></returns>
-        public string Read(int row,string columnName)
+        public string Read(int row, string columnName)
         {
             if (!string.IsNullOrEmpty(columnName))
             {
                 if (row >= 0 && row < m_RawDataList.Count)
                 {
-                    var column=GetColumnByColumnName(columnName);
-                    if (column>=0)
+                    var column = GetColumnByColumnName(columnName);
+                    if (column >= 0)
                     {
                         if (m_RawDataList[row].Count > column)
                         {
@@ -198,7 +194,7 @@ namespace RedScarf.EasyCSV
 
         public string Read(string id, string columnName)
         {
-            return Read(GetRowByID(id),columnName);
+            return Read(GetRowByID(id), columnName);
         }
 
         public string Read(string id, int column)
@@ -258,18 +254,18 @@ namespace RedScarf.EasyCSV
         /// <param m_Name="row"></param>
         /// <param m_Name="columnName"></param>
         /// <param m_Name="value"></param>
-        public void Write(int row,string columnName,string value)
+        public void Write(int row, string columnName, string value)
         {
             var column = GetColumnByColumnName(columnName);
             if (column >= 0)
             {
-                Write(row,column,value);
+                Write(row, column, value);
             }
         }
 
         public void Write(string id, string columnName, string value)
         {
-            Write(GetRowByID(id),columnName,value);
+            Write(GetRowByID(id), columnName, value);
         }
 
         public void Write(string id, int column, string value)
@@ -283,7 +279,7 @@ namespace RedScarf.EasyCSV
         /// <param m_Name="data"></param>
         public void Append(string data)
         {
-            InsertData(m_RawDataList.Count,data);
+            InsertData(m_RawDataList.Count, data);
         }
 
         /// <summary>
@@ -291,11 +287,11 @@ namespace RedScarf.EasyCSV
         /// </summary>
         /// <param m_Name="row"></param>
         /// <param m_Name="data"></param>
-        public void InsertData(int row,string data)
+        public void InsertData(int row, string data)
         {
             if (string.IsNullOrEmpty(data)) return;
 
-            row = Mathf.Clamp(row,0, m_RawDataList.Count);
+            row = Mathf.Clamp(row, 0, m_RawDataList.Count);
             var list = GetDataList(data);
             if (list != null)
             {
@@ -303,7 +299,7 @@ namespace RedScarf.EasyCSV
 
                 //记录id
                 var end = row + list.Count;
-                for (var i=row;i< end; i++)
+                for (var i = row; i < end; i++)
                 {
                     ResolveRowID(i);
                 }
@@ -323,13 +319,13 @@ namespace RedScarf.EasyCSV
             stringBuilder.Length = 0;
 
             //解析换行符
-            if (m_LineBreak==LineBreak.None)
+            if (m_LineBreak == LineBreak.None)
             {
                 if (data.IndexOf(CRLF) >= 0)
                 {
                     m_LineBreak = LineBreak.CRLF;
                 }
-                else if (data.IndexOf(CR)>=0)
+                else if (data.IndexOf(CR) >= 0)
                 {
                     m_LineBreak = LineBreak.CR;
                 }
@@ -372,7 +368,7 @@ namespace RedScarf.EasyCSV
                     else if (c == CR)
                     {
                         isBreakLine = true;
-                        if (i+1<len&&data[i+1]==LF)
+                        if (i + 1 < len && data[i + 1] == LF)
                         {
                             i++;
                         }
@@ -434,7 +430,7 @@ namespace RedScarf.EasyCSV
         public void RemoveValue(int row, string columnName)
         {
             var column = GetColumnByColumnName(columnName);
-            RemoveValue(row,column);
+            RemoveValue(row, column);
         }
 
         /// <summary>
@@ -472,7 +468,7 @@ namespace RedScarf.EasyCSV
         public void RemoveColumn(string columnName)
         {
             var column = GetColumnByColumnName(columnName);
-            if (column>=0)
+            if (column >= 0)
             {
                 RemoveColumn(column);
                 columnNameDict.Remove(columnName);
@@ -487,11 +483,11 @@ namespace RedScarf.EasyCSV
         /// <returns></returns>
         public CsvTableCoords FindValue(string value, CsvTableCoords start)
         {
-            var coords = new CsvTableCoords(-1,-1);
-            var startRow = Mathf.Clamp(start.row,0,m_RawDataList.Count);
+            var coords = new CsvTableCoords(-1, -1);
+            var startRow = Mathf.Clamp(start.row, 0, m_RawDataList.Count);
 
-            var firstRow=m_RawDataList[startRow];
-            for (var i=start.column;i<firstRow.Count;i++)
+            var firstRow = m_RawDataList[startRow];
+            for (var i = start.column; i < firstRow.Count; i++)
             {
                 if (firstRow[i] == value)
                 {
@@ -519,7 +515,7 @@ namespace RedScarf.EasyCSV
 
         public CsvTableCoords FindValue(string value)
         {
-            return FindValue(value,new CsvTableCoords(0,0));
+            return FindValue(value, new CsvTableCoords(0, 0));
         }
 
         /// <summary>
@@ -561,7 +557,7 @@ namespace RedScarf.EasyCSV
         /// <param name="lineBreak">换行符,如果参数为LineBreak.None,那使用csv中的换行符</param>
         /// <param name="separator">分隔符</param>
         /// <returns></returns>
-        public string GetData(LineBreak lineBreak=LineBreak.None,char separator=DEFAULT_SEPARATOR)
+        public string GetData(LineBreak lineBreak = LineBreak.None, char separator = DEFAULT_SEPARATOR)
         {
             stringBuilder.Length = 0;
 
@@ -583,7 +579,7 @@ namespace RedScarf.EasyCSV
             var strLen = 0;
             var hasSpecialCharacters = false;
             var str = "";
-            var c =char.MinValue;
+            var c = char.MinValue;
             var columnStart = 0;
             foreach (var row in m_RawDataList)
             {
@@ -596,7 +592,7 @@ namespace RedScarf.EasyCSV
                     {
                         str = row[i];
                         strLen = str.Length;
-                        for (var j=0;j<strLen;j++)
+                        for (var j = 0; j < strLen; j++)
                         {
                             c = str[j];
                             if (c == separator)
@@ -604,12 +600,12 @@ namespace RedScarf.EasyCSV
                                 //分隔符
                                 hasSpecialCharacters = true;
                             }
-                            else if(c == LF || c == CR)
+                            else if (c == LF || c == CR)
                             {
                                 //换行符
                                 hasSpecialCharacters = true;
                             }
-                            else if(c ==ESCAPE_CHAR)
+                            else if (c == ESCAPE_CHAR)
                             {
                                 //引号,需转义
                                 stringBuilder.Append(ESCAPE_CHAR);
@@ -634,4 +630,5 @@ namespace RedScarf.EasyCSV
             return stringBuilder.ToString();
         }
     }
+
 }

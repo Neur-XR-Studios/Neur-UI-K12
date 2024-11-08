@@ -3,52 +3,55 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine;
 using Simulanis.ContentSDK;
-
-public class SimulanisSdkCommunicator : MonoBehaviour
+namespace K12.UI
 {
-    public UnityEvent StartTaskUpdate_Event;
-    public UnityEvent EndTaskUpdate_Event;
-    public ModuleManager moduleManager_Script;
-
-    private int TaskId = 1;
-
-    #region ModuleManager Controls
-    void UpdateStartTask()
+    public class SimulanisSdkCommunicator : MonoBehaviour
     {
-        TaskId = DataManager.StaticVariables.STEP_COUNT;
-        if(TaskId < 1)
+        public UnityEvent StartTaskUpdate_Event;
+        public UnityEvent EndTaskUpdate_Event;
+        public ModuleManager moduleManager_Script;
+
+        private int TaskId = 1;
+
+        #region ModuleManager Controls
+        void UpdateStartTask()
         {
-            TaskId = 1;
+            TaskId = DataManager.StaticVariables.STEP_COUNT;
+            if (TaskId < 1)
+            {
+                TaskId = 1;
+            }
+            Invoke(nameof(callInDelay), 0.2f);
         }
-        Invoke(nameof(callInDelay), 0.2f);
-    }
-    void callInDelay()
-    {
-        moduleManager_Script.StartTask(TaskId.ToString());
-        
-    }
-    void UpdateEndTask()
-    {
-        int taskId = DataManager.StaticVariables.STEP_COUNT-1;
-        if (taskId < 1)
+        void callInDelay()
         {
-            taskId = 1;
-        }
-        moduleManager_Script.EndTask(taskId.ToString());
-        //TaskId++;
-    }
-    #endregion
+            moduleManager_Script.StartTask(TaskId.ToString());
 
-    #region Event Subscription Handler
-    private void OnEnable() //subribed on SPAW event
-    {
-        EventManager.AddHandler(EVENTS.NEXT_STEP, UpdateEndTask);
-        EventManager.AddHandler(EVENTS.STEP, UpdateStartTask);
+        }
+        void UpdateEndTask()
+        {
+            int taskId = DataManager.StaticVariables.STEP_COUNT - 1;
+            if (taskId < 1)
+            {
+                taskId = 1;
+            }
+            moduleManager_Script.EndTask(taskId.ToString());
+            //TaskId++;
+        }
+        #endregion
+
+        #region Event Subscription Handler
+        private void OnEnable() //subribed on SPAW event
+        {
+            EventManager.AddHandler(EVENTS.NEXT_STEP, UpdateEndTask);
+            EventManager.AddHandler(EVENTS.STEP, UpdateStartTask);
+        }
+        private void OnDisable() //unsubribed from SPAW event
+        {
+            EventManager.RemoveHandler(EVENTS.NEXT_STEP, UpdateEndTask);
+            EventManager.RemoveHandler(EVENTS.STEP, UpdateStartTask);
+        }
+        #endregion
     }
-    private void OnDisable() //unsubribed from SPAW event
-    {
-        EventManager.RemoveHandler(EVENTS.NEXT_STEP, UpdateEndTask);
-        EventManager.RemoveHandler(EVENTS.STEP, UpdateStartTask);
-    }
-    #endregion
+
 }

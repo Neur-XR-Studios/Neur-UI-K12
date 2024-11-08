@@ -2,12 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
-
-namespace RedScarf.EasyCSV
+namespace K12.UI
 {
-    /// <summary>
-    /// csv帮助类
-    /// </summary>
     public static class CsvHelper
     {
         static Dictionary<string, CsvTable> tableDict;
@@ -131,4 +127,5 @@ namespace RedScarf.EasyCSV
             tableDict.Clear();
         }
     }
+
 }

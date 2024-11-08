@@ -2,9 +2,9 @@ using System.Collections;
 using UnityEngine.Networking;
 using UnityEngine;
 using Simulanis.ContentSDK;
-
-namespace RedScarf.EasyCSV.Demo
+namespace K12.UI
 {
+
     public class AutomationControllerScript : MonoBehaviour
     {
         CsvTable table;
@@ -27,14 +27,14 @@ namespace RedScarf.EasyCSV.Demo
             string url = string.Empty;
             CsvHelper.Init();
             string lan = LanguageSelectionManager.CurrentLanguage;
-            if(lan == "English")
+            if (lan == "English")
             {
                 url = EnglishCsv_url;
             }
-            else if(lan == "Hindi")
+            else if (lan == "Hindi")
             {
                 url = HindiCsv_url;
-            }           
+            }
 
             StartCoroutine(LoadStreamingAsset(url));
         }
@@ -51,7 +51,7 @@ namespace RedScarf.EasyCSV.Demo
                 string csvData = request.downloadHandler.text;
                 TextAsset text = new TextAsset(csvData);
                 table = CsvHelper.Create(text.name, text.text);
-                TotalStep = table.RowCount;                
+                TotalStep = table.RowCount;
             }
             else
             {
@@ -68,7 +68,7 @@ namespace RedScarf.EasyCSV.Demo
             int rowCount = 0;
             foreach (var row in table.RawDataList)
             {
-                if(rowCount > 1)
+                if (rowCount > 1)
                 {
                     int count = 0;
                     foreach (var value in row)
@@ -120,7 +120,7 @@ namespace RedScarf.EasyCSV.Demo
             DataManager.StaticVariables.STEP_COUNT = CurrentCount - 1;
             //Debug.Log(DataManager.StaticVariables.STEP_COUNT + "Current Step");
             CurrentCount++;
-            StepInitialisation();            
+            StepInitialisation();
         }
         #endregion
 
@@ -141,7 +141,7 @@ namespace RedScarf.EasyCSV.Demo
 
         void StepInitialisation()
         {
-            if(!IsConclusionStep)
+            if (!IsConclusionStep)
             {
                 string stepType = DataManager.StaticVariables.COLUMN_01;
                 EventManager.Broadcast(EVENTS.UPDATE_UI);
@@ -160,17 +160,17 @@ namespace RedScarf.EasyCSV.Demo
                             EventManager.Broadcast(EVENTS.ENABLE_FINAL_UI);
                             EventManager.Broadcast(EVENTS.STEP);
                         }
-                        IsConclusionStep = true;                                                
+                        IsConclusionStep = true;
                         return;
                     default: PromptHandler(); return;
                 }
             }
-            
+
         }
         void MoveNextStepHandler()
         {
             AudioSource audio = VoiceoverControllerScript.VoiceOverAudioSource;
-            if(audio)
+            if (audio)
             {
                 audio.Stop();
             }
@@ -200,6 +200,7 @@ namespace RedScarf.EasyCSV.Demo
             EventManager.RemoveHandler(EVENTS.NEXT_STEP, MoveNextStepHandler);
         }
         #endregion
-        
+
     }
+
 }

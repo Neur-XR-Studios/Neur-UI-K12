@@ -2,47 +2,50 @@ using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-
-public class ToggleButton : MonoBehaviour
+namespace K12.UI
 {
-    // Reference to the UI Button
-    private Button button;
-
-    // UnityEvents for toggle states
-    public UnityEvent onToggleValuetrue, onToggleValuefalse;
-
-    // Tracks the toggle state
-    private bool isToggle = false;
-
-    private void Start()
+    public class ToggleButton : MonoBehaviour
     {
-        // Get the Button component
-        button = GetComponent<Button>();
+        // Reference to the UI Button
+        private Button button;
 
-        // Add the OnToggleChanged method as a listener when the button is clicked
-        button.onClick.AddListener(OnToggleChanged);
-    }
+        // UnityEvents for toggle states
+        public UnityEvent onToggleValuetrue, onToggleValuefalse;
 
-    // This function is called when the toggle state changes
-    private void OnToggleChanged()
-    {
-        // Flip the toggle state
-        isToggle = !isToggle;
+        // Tracks the toggle state
+        private bool isToggle = false;
 
-        // Invoke the appropriate event based on the toggle state
-        if (isToggle)
+        private void Start()
         {
-            //AudioSource audioSource = GetComponent<AudioSource>();
-            onToggleValuetrue.Invoke();
+            // Get the Button component
+            button = GetComponent<Button>();
+
+            // Add the OnToggleChanged method as a listener when the button is clicked
+            button.onClick.AddListener(OnToggleChanged);
         }
-        else
+
+        // This function is called when the toggle state changes
+        private void OnToggleChanged()
         {
-            onToggleValuefalse.Invoke();
+            // Flip the toggle state
+            isToggle = !isToggle;
+
+            // Invoke the appropriate event based on the toggle state
+            if (isToggle)
+            {
+                //AudioSource audioSource = GetComponent<AudioSource>();
+                onToggleValuetrue.Invoke();
+            }
+            else
+            {
+                onToggleValuefalse.Invoke();
+            }
+        }
+        private void OnDestroy()
+        {
+            // Remove listener when the object is destroyed
+            button.onClick.RemoveListener(OnToggleChanged);
         }
     }
-    private void OnDestroy()
-    {
-        // Remove listener when the object is destroyed
-        button.onClick.RemoveListener(OnToggleChanged);
-    }
+
 }

@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+namespace K12.UI
+{
 
+}
 public class DataManager : MonoBehaviour
 {
     public class StaticVariables
