@@ -4,7 +4,8 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Collections;
-
+namespace Neur.UI
+{
 public class UIAutomationController : MonoBehaviour
 {
     #region Headers
@@ -438,4 +439,5 @@ public class UIAutomationController : MonoBehaviour
         EventManager.RemoveHandler(EVENTS.SPAWN, UpdateCFContent);
     }
     #endregion
+}
 }
