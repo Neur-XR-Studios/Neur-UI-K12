@@ -293,7 +293,7 @@ namespace K12.UI
             UIAutomationController.objectInfos = objectInfos;
             UIAutomationController.objectIconNames = objectIconNames;
 
-            for (int i = 0; i < objectNames.Count; i++)
+            for (int i = 0; i < CF_Objects.Length; i++)
             {
                 GameObject cfObject = CF_Objects[i];
                 cfObject.AddComponent<CFManager>();
