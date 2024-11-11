@@ -10,6 +10,12 @@ namespace K12.UI
     {
         #region Headers
         [Space(10)]
+        [Header("----------------------CAMERA REFERENCEs--------------------")]
+        [Space(10)]
+        private Camera MainCamera;
+        [Space(10)]
+        private Camera CFCamera;
+        [Space(10)]
         [Header("----------------------UI REFERENCES--------------------")]
         [Space(10)]
         [Header("Landing Menu")]
@@ -114,6 +120,15 @@ namespace K12.UI
         }
         void Initialisation()
         {
+
+            Time.timeScale = 1; // Resume the game
+            // Ensure only one camera is active at the start
+            CFCamera = GameObject.FindWithTag("CFCamera").GetComponent<Camera>();
+            MainCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
+
+            MainCamera.enabled = IsActivity;
+            CFCamera.enabled = !IsActivity;
+
             PanelType = PANEL_TYPE.LANDING;
             subSteps = new();
             subSteps.Clear();
@@ -127,7 +142,7 @@ namespace K12.UI
 
 
             DevParent_Object.SetActive(false);
-            CFParent_Object.SetActive(false);
+            //CFParent_Object.SetActive(false);
 
             Ok_button.onClick.AddListener(OkButtonClickHandler);
             CF_Button.onClick.AddListener(CFButtonClickHandler);
@@ -281,17 +296,9 @@ namespace K12.UI
             string objectInfoCSV = DataManager.StaticVariables.COLUMN_07; //ObjectInfo names combined with commas string
             string objectIconNameCSV = DataManager.StaticVariables.COLUMN_08; //Object icon names combined with commas string
 
-            List<string> objectNames = new List<string>();
-            List<string> objectInfos = new List<string>();
-            List<string> objectIconNames = new List<string>();
-
             objectNames.AddRange(objectNameCSV.Split(','));
             objectInfos.AddRange(objectInfoCSV.Split('*'));
             objectIconNames.AddRange(objectIconNameCSV.Split(','));
-
-            UIAutomationController.objectNames = objectNames;
-            UIAutomationController.objectInfos = objectInfos;
-            UIAutomationController.objectIconNames = objectIconNames;
 
             for (int i = 0; i < CF_Objects.Length; i++)
             {
@@ -372,10 +379,15 @@ namespace K12.UI
                         audioSource.Pause();
                     }
 
-                    DevParent_Object.SetActive(false);
-                    CFParent_Object.SetActive(true);
+                    //DevParent_Object.SetActive(false);
+                    //CFParent_Object.SetActive(true);
+
                     IsActivity = false;
                     VoiceoverControllerScript.isActivity = false;
+
+                    MainCamera.enabled = IsActivity; //disable main camera
+                    CFCamera.enabled = !IsActivity; //enable CF camera
+                    Time.timeScale = 0; // Pauses the game
                 }
                 else
                 {
@@ -385,11 +397,15 @@ namespace K12.UI
                         audioSource.Play();
                     }
 
-                    DevParent_Object.SetActive(true);
-                    CFParent_Object.SetActive(false);
+                    //DevParent_Object.SetActive(true);
+                    //CFParent_Object.SetActive(false);
                     CfMenu_Obj.SetActive(false);
                     IsActivity = true;
                     VoiceoverControllerScript.isActivity = true;
+
+                    MainCamera.enabled = IsActivity;
+                    CFCamera.enabled = !IsActivity;
+                    Time.timeScale = 1; // Resume the game
                 }
             }
 
@@ -456,6 +472,8 @@ namespace K12.UI
             EventManager.RemoveHandler(EVENTS.PROMPT, EnablePromptMenu);
             EventManager.RemoveHandler(EVENTS.ENABLE_FINAL_UI, EnableConclusionPanel);
             EventManager.RemoveHandler(EVENTS.SPAWN, UpdateCFContent);
+
+            Time.timeScale = 1; // Resume the game
         }
         #endregion
     }

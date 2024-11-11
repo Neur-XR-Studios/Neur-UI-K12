@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine.Networking;
 using UnityEngine;
 using Simulanis.ContentSDK;
+using UnityEditor.PackageManager.Requests;
 namespace K12.UI
 {
 
@@ -13,6 +14,7 @@ namespace K12.UI
         private int CurrentCount = 1;
         private int TotalStep = 0;
         private bool IsConclusionStep = false;
+        private string CsvName = string.Empty;
 
         //public AudioSource VoiceOverAudio;
 
@@ -30,17 +32,30 @@ namespace K12.UI
             if (lan == "English")
             {
                 url = EnglishCsv_url;
+                CsvName = "csvData_Eng";
             }
             else if (lan == "Hindi")
             {
                 url = HindiCsv_url;
+                CsvName = "csvData_Hi.csv";
             }
+            LoadCsvFromResources();
+            //StartCoroutine(LoadStreamingAsset(url));
 
-            StartCoroutine(LoadStreamingAsset(url));
         }
         #endregion
 
         #region Load CSV
+        void LoadCsvFromResources()
+        {
+            TextAsset text = Resources.Load<TextAsset>(CsvName);
+            table = CsvHelper.Create(text.name, text.text);
+            TotalStep = table.RowCount;
+
+            parseColumnData();
+            ParseRowData();
+        }
+
         IEnumerator LoadStreamingAsset(string url)
         {
             UnityWebRequest request = UnityWebRequest.Get(url);
