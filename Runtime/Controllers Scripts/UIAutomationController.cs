@@ -189,7 +189,7 @@ namespace K12.UI
         {
             if (IsConlusionStepHasPrompt)
             {
-                EnablePromptMenu();
+                EventManager.Broadcast(EVENTS.PROMPT);
             }
             else
             {
