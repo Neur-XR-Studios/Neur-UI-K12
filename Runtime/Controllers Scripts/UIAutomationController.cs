@@ -29,8 +29,8 @@ namespace K12.UI
         [Header("Activity Page")]
         [Space(10)]
         public GameObject ActivityMenu_Obj;
-        //[Space(10)]
-        //public TMP_Text ActivityHeading_Text;
+        [Space(10)]
+        public TMP_Text ActivityHeading_Text;
         [Space(20)]
         [Header("Welcome Page")]
         [Space(10)]
@@ -75,6 +75,8 @@ namespace K12.UI
         [Header("Conclusion panel")]
         [Space(10)]
         public GameObject Conclusion_Panel;
+        [Space(10)]
+        public TMP_Text Conclusion_Text;
         [Space(20)]
         [Header("Step Content Scroll")]
         [Space(10)]
@@ -92,6 +94,7 @@ namespace K12.UI
 
 
         private bool IsActivity = true; // To find activity scene or CF scene 
+        public static bool IsPromptEnabled = false; // To find activity scene or CF scene 
         private bool Is_CF_Holded = false; // To freeze CF during animations and camera movements
         [HideInInspector]
         public static bool IsConlusionStepHasPrompt = false; // To know this is the prompt of conclution step to prevent moving to next step.
@@ -120,6 +123,10 @@ namespace K12.UI
         }
         void Initialisation()
         {
+            IsActivity = true;
+            IsPromptEnabled = false;
+            Is_CF_Holded = false;
+            IsConlusionStepHasPrompt = false;
 
             Time.timeScale = 1; // Resume the game
             // Ensure only one camera is active at the start
@@ -142,12 +149,12 @@ namespace K12.UI
 
 
             DevParent_Object.SetActive(false);
-            //CFParent_Object.SetActive(false);
+            CFParent_Object.SetActive(false);
 
             Ok_button.onClick.AddListener(OkButtonClickHandler);
             CF_Button.onClick.AddListener(CFButtonClickHandler);
             MainInfo_Text.text = string.Empty;
-            //ActivityHeading_Text.text = string.Empty;
+            ActivityHeading_Text.text = string.Empty;
         }
         #endregion
 
@@ -174,6 +181,7 @@ namespace K12.UI
         }
         void EnablePromptMenu()
         {
+            IsPromptEnabled = true;
             PromptMenu_Obj.SetActive(true);
             PromptInfo_Text.text = DataManager.StaticVariables.COLUMN_02;
         }
@@ -187,6 +195,7 @@ namespace K12.UI
             {
                 ResetAllMenu();
                 Conclusion_Panel.SetActive(true);
+                Conclusion_Text.text = DataManager.StaticVariables.COLUMN_04;
             }
         }
         void ResetAllMenu()
@@ -230,12 +239,11 @@ namespace K12.UI
         {
             //Update text
             string content = DataManager.StaticVariables.COLUMN_04;
-            //ModuleName = DataManager.StaticVariables.COLUMN_02;
             MainInfo_Text.text = content;
-            //ActivityHeading_Text.text = ModuleName;
+            ActivityHeading_Text.text = DataManager.StaticVariables.COLUMN_02;
 
             //Update icon image
-            Icon_Img.sprite = Resources.Load<Sprite>("Images/Landing_Icon");
+            Icon_Img.sprite = Resources.Load<Sprite>("Images/Landing_Image");
         }
         void UpdateWelcomeMenu()
         {
@@ -368,7 +376,7 @@ namespace K12.UI
         #region Others
         void CFButtonClickHandler()
         {
-            if (!Is_CF_Holded)
+            if (!Is_CF_Holded && !IsPromptEnabled)
             {
                 AudioSource[] allAudioSources = FindObjectsOfType<AudioSource>();// Find all AudioSource components in the scene
                 if (IsActivity)
@@ -380,7 +388,7 @@ namespace K12.UI
                     }
 
                     //DevParent_Object.SetActive(false);
-                    //CFParent_Object.SetActive(true);
+                    CFParent_Object.SetActive(true);
 
                     IsActivity = false;
                     VoiceoverControllerScript.isActivity = false;
@@ -398,7 +406,7 @@ namespace K12.UI
                     }
 
                     //DevParent_Object.SetActive(true);
-                    //CFParent_Object.SetActive(false);
+                    CFParent_Object.SetActive(false);
                     CfMenu_Obj.SetActive(false);
                     IsActivity = true;
                     VoiceoverControllerScript.isActivity = true;
@@ -413,6 +421,7 @@ namespace K12.UI
         }
         void OkButtonClickHandler()
         {
+            IsPromptEnabled = false;
             if (IsConlusionStepHasPrompt)
             {
                 IsConlusionStepHasPrompt = false;

@@ -8,6 +8,7 @@ namespace K12.UI
     {
         // Reference to the UI Button
         private Button button;
+        public bool IsCFButton;
 
         // UnityEvents for toggle states
         public UnityEvent onToggleValuetrue, onToggleValuefalse;
@@ -26,6 +27,17 @@ namespace K12.UI
 
         // This function is called when the toggle state changes
         private void OnToggleChanged()
+        {
+            if(!(IsCFButton && UIAutomationController.IsPromptEnabled))
+            {
+                Toggle();
+            }    
+            if(!IsCFButton)
+            {
+                Toggle();
+            }
+        }
+        void Toggle()
         {
             // Flip the toggle state
             isToggle = !isToggle;
