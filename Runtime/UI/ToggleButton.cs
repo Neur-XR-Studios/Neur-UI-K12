@@ -27,18 +27,23 @@ namespace K12.UI
 
         // This function is called when the toggle state changes
         private void OnToggleChanged()
-        {               
-            if(!IsCFButton)
-            {
-                Toggle();
-            }
-            else
-            {
-                if (!UIAutomationController.IsPromptEnabled)
-                {
-                    Toggle();
-                }
-            }
+        {
+            //  Prompt Checker   now we dont need that
+
+            /*  if(!IsCFButton)
+              {
+                  Toggle();
+              }
+              else
+              {
+                  if (!UIAutomationController.IsPromptEnabled)
+                  {
+                      Toggle();
+                  }
+              }*/
+
+            Toggle();
+
         }
         void Toggle()
         {

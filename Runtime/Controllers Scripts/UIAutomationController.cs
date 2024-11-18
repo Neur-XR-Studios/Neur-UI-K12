@@ -376,7 +376,8 @@ namespace K12.UI
         #region Others
         void CFButtonClickHandler()
         {
-            if (!Is_CF_Holded && !IsPromptEnabled)
+            //&& !IsPromptEnabled
+            if (!Is_CF_Holded )
             {
                 AudioSource[] allAudioSources = FindObjectsOfType<AudioSource>();// Find all AudioSource components in the scene
                 if (IsActivity)

@@ -11,8 +11,6 @@ namespace K12.UI
         public Image ToggleImg;
         public Sprite OnSprite, OffSprite;
 
-        public TMP_FontAsset OnFontAsset, OffFontAsset;
-
         [Header("UI Components")]
         public TMP_Text statusText;                 // Text to display "Muted" or "Unmuted"
         public RectTransform toggleSprite;          // Sprite that moves on toggle
@@ -91,7 +89,7 @@ namespace K12.UI
         {
             // Set the text, font, and sprite based on mute status
             statusText.text = isMuted ? muteText : unmuteText;
-            statusText.font = isMuted ? OnFontAsset : OffFontAsset;
+            statusText.color = isMuted ? Color.white : Color.black;
             ToggleImg.sprite = isMuted ? OnSprite : OffSprite;
         }
 
