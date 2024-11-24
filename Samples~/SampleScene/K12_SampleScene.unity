@@ -2971,6 +2971,43 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 955671002}
     m_Modifications:
+    - target: {fileID: 524958327, guid: 4f0d4d4fa38e9344aa65178323fe98a7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 800592537, guid: 4f0d4d4fa38e9344aa65178323fe98a7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 800592539, guid: 4f0d4d4fa38e9344aa65178323fe98a7, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 609e090d769a4574ba0c06977b56e038, type: 2}
+    - target: {fileID: 812754982, guid: 4f0d4d4fa38e9344aa65178323fe98a7, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 609e090d769a4574ba0c06977b56e038, type: 2}
+    - target: {fileID: 1336256505, guid: 4f0d4d4fa38e9344aa65178323fe98a7, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 609e090d769a4574ba0c06977b56e038, type: 2}
+    - target: {fileID: 1588221197, guid: 4f0d4d4fa38e9344aa65178323fe98a7, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 609e090d769a4574ba0c06977b56e038, type: 2}
+    - target: {fileID: 1816551689, guid: 4f0d4d4fa38e9344aa65178323fe98a7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2092667065, guid: 4f0d4d4fa38e9344aa65178323fe98a7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 705558926871828280, guid: 4f0d4d4fa38e9344aa65178323fe98a7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2620354981529726249, guid: 4f0d4d4fa38e9344aa65178323fe98a7,
         type: 3}
       propertyPath: m_Name
@@ -3029,6 +3066,11 @@ PrefabInstance:
     - target: {fileID: 2620354981529726254, guid: 4f0d4d4fa38e9344aa65178323fe98a7,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8020056567244454522, guid: 4f0d4d4fa38e9344aa65178323fe98a7,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
