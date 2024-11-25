@@ -60,11 +60,11 @@ namespace K12.UI
             {
                 Debug.Log(PlayerPrefs.GetInt("BackgroundAudioMuteState"));
                 Mute_Button.image.sprite = mute;
-                if (PlayerPrefs.GetInt("BackgroundAudioMuteState") == 1)
+                if (PlayerPrefs.GetInt("BackgroundAudioMuteState") == 0)
                 {
                     BG_AudioSource[0].mute = true;
                 }
-                if (PlayerPrefs.GetInt("SoundEffectMuteState") == 1)
+                if (PlayerPrefs.GetInt("SoundEffectMuteState") == 0)
                 {
                     BG_AudioSource[1].mute = true;
                 }
@@ -73,11 +73,11 @@ namespace K12.UI
             else
             {
                 Mute_Button.image.sprite = unmute;
-                if (PlayerPrefs.GetInt("BackgroundAudioMuteState") == 1)
+                if (PlayerPrefs.GetInt("BackgroundAudioMuteState") == 0)
                 {
                     BG_AudioSource[0].mute = false;
                 }
-                if (PlayerPrefs.GetInt("SoundEffectMuteState") == 1)
+                if (PlayerPrefs.GetInt("SoundEffectMuteState") == 0)
                 {
                     BG_AudioSource[1].mute = false;
                 }
