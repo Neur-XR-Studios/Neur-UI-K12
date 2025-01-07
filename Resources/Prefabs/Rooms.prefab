@@ -1207,7 +1207,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 27ca505bcc65c6e40b58bfe14769e191, type: 2}
+  - {fileID: 2100000, guid: 609e090d769a4574ba0c06977b56e038, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2121,7 +2121,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 27ca505bcc65c6e40b58bfe14769e191, type: 2}
+  - {fileID: 2100000, guid: 609e090d769a4574ba0c06977b56e038, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2287,7 +2287,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 27ca505bcc65c6e40b58bfe14769e191, type: 2}
+  - {fileID: 2100000, guid: 609e090d769a4574ba0c06977b56e038, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3225,7 +3225,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 27ca505bcc65c6e40b58bfe14769e191, type: 2}
+  - {fileID: 2100000, guid: 33193c679e7873445924890e3f6bcce0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3658,7 +3658,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 27ca505bcc65c6e40b58bfe14769e191, type: 2}
+  - {fileID: 2100000, guid: 33193c679e7873445924890e3f6bcce0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3860,7 +3860,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 27ca505bcc65c6e40b58bfe14769e191, type: 2}
+  - {fileID: 2100000, guid: 33193c679e7873445924890e3f6bcce0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3892,12 +3892,12 @@ GameObject:
   m_Component:
   - component: {fileID: 5938580871834686507}
   m_Layer: 0
-  m_Name: GreenBoard
+  m_Name: Assessment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5938580871834686507
 Transform:
   m_ObjectHideFlags: 0
