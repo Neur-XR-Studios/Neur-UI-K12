@@ -8,6 +8,7 @@ namespace K12.UI
     public class ButtonClickSound : MonoBehaviour
     {
         public List<Button> UIButtons = new List<Button>();
+        public List<Toggle> toggles = new List<Toggle>();
         public AudioSource EffectAudioSource;
         public AudioClip audioClip;
 
@@ -16,8 +17,16 @@ namespace K12.UI
         {
             foreach (var button in UIButtons)
             {
+                if(button is not null)
                 button.onClick.AddListener(() => PlayClickAudio(audioClip));
             }
+
+            foreach (var toggle in toggles)
+            {
+                if (toggle is not null)
+                    toggle.onValueChanged.AddListener(value => PlayClickAudio(audioClip));
+            }
+
         }
 
         void PlayClickAudio(AudioClip audioClip)
