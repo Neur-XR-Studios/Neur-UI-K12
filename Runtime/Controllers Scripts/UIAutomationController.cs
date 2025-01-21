@@ -184,6 +184,7 @@ namespace K12.UI
             IsPromptEnabled = true;
             PromptMenu_Obj.SetActive(true);
             PromptInfo_Text.text = DataManager.StaticVariables.COLUMN_02;
+            CorrectHindiText();
         }
         void EnableConclusionPanel()
         {
@@ -241,6 +242,7 @@ namespace K12.UI
             string content = DataManager.StaticVariables.COLUMN_04;
             MainInfo_Text.text = content;
             ActivityHeading_Text.text = DataManager.StaticVariables.COLUMN_02;
+            CorrectHindiText();
 
             //Update icon image
             Icon_Img.sprite = Resources.Load<Sprite>("Images/Landing_Image");
@@ -251,6 +253,7 @@ namespace K12.UI
             string content = DataManager.StaticVariables.COLUMN_04;
             WelcomeHeading_Text.text = headContent;
             Welcome_Text.text = content;
+            CorrectHindiText();
             //WelcomePageIcon_Img.sprite = Resources.Load<Sprite>("Images/Welcome_Icon");
             EnableWelcomeMenu();
         }
@@ -270,6 +273,7 @@ namespace K12.UI
                 Image tickImg = substepCont.transform.GetChild(2).GetComponent<Image>();
                 tickImg.enabled = true;
             }
+            CorrectHindiText();
         }
         void MainStepContentChanger()
         {
@@ -285,6 +289,7 @@ namespace K12.UI
             {
                 subStepTittle.text = substep;
             }
+            CorrectHindiText();
         }
         void UpdateCFObjectInfo_UI()
         {
@@ -293,6 +298,7 @@ namespace K12.UI
             int index = objectNames.IndexOf(objectName);
             ObjectInfo_Text.text = objectInfos[index];
             ObjectIcon_Img.sprite = Resources.Load<Sprite>($"Images/{objectIconNames[index].Trim()}"); //Update icon image
+            CorrectHindiText();
         }
         void UpdateCFContent()
         {
@@ -315,6 +321,7 @@ namespace K12.UI
                 TMP_Text textComponents = cfObject.GetComponentInChildren<TMP_Text>();
                 textComponents.text = objectNames[i];
             }
+            CorrectHindiText();
             yield return null; // Wait for the next frame to reduce load
         }
         void UpdateStepDataMenuText()
@@ -370,6 +377,7 @@ namespace K12.UI
             {
                 Debug.LogError("Colunm_03 and Colunm_04 do not have the same count!");
             }
+            CorrectHindiText();
         }
         #endregion
 
@@ -427,6 +435,10 @@ namespace K12.UI
             }
 
         }
+        void CorrectHindiText()
+        {
+            EventManager.Broadcast(EVENTS.CORRECT_HINDI);
+        }
         #endregion
 
         #region Public Function
@@ -446,15 +458,11 @@ namespace K12.UI
         }
         public void Pause()
         {
-
-            VoiceoverControllerScript.VoiceOverAudioSource.Pause();
-            Time.timeScale = 0.0001f;
+            Time.timeScale = 0;
         }
         public void UnPause()
         {
-
-            VoiceoverControllerScript.VoiceOverAudioSource.UnPause();
-            Time.timeScale = 1;
+            Time.timeScale = 0.0001f;
         }
         public void Hold_CF()
         {

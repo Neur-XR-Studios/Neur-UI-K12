@@ -16,7 +16,8 @@ namespace K12.UI
         UPDATE_UI,
         UPDATE_CF_UI,
         ENABLE_FINAL_UI,
-        CHANGE_LANGUAGE
+        CHANGE_LANGUAGE,
+        CORRECT_HINDI
     }
     public class EventManager : MonoBehaviour // Everything here controlled By Events
     {

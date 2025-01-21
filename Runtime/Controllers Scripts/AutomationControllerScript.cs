@@ -2,12 +2,14 @@ using System.Collections;
 using UnityEngine.Networking;
 using UnityEngine;
 using Simulanis.ContentSDK;
+using K12.HindiFontReplacer;
 //using UnityEditor.PackageManager.Requests;
 namespace K12.UI
 {
 
     public class AutomationControllerScript : MonoBehaviour
     {
+        public CharReplacerHindi CharReplacerHindi;
         CsvTable table;
         //readonly string HindiCsv_url = Application.streamingAssetsPath + "/csvData_Hi.csv";
         //readonly string EnglishCsv_url = Application.streamingAssetsPath + "/csvData_Eng.csv";
