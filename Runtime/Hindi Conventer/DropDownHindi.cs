@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
-using K12.HindiFontReplacer;
-namespace K12.DemoHindiFont
+using Simulanis.ContentSDK.K12.HindiFontReplacer;
+namespace Simulanis.ContentSDK.K12.DemoHindiFont
 {
     public class DropDownHindi : MonoBehaviour
     {

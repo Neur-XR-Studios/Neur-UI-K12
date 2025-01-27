@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine;
-namespace K12.UI
+namespace Simulanis.ContentSDK.K12.UI
 {
     public class InteractionStepController : MonoBehaviour
     {

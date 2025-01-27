@@ -2,9 +2,9 @@ using System.Collections;
 using UnityEngine.Networking;
 using UnityEngine;
 using Simulanis.ContentSDK;
-using K12.HindiFontReplacer;
+using Simulanis.ContentSDK.K12.HindiFontReplacer;
 //using UnityEditor.PackageManager.Requests;
-namespace K12.UI
+namespace Simulanis.ContentSDK.K12.UI
 {
 
     public class AutomationControllerScript : MonoBehaviour

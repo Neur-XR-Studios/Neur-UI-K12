@@ -6,8 +6,10 @@ using System.Collections;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Simulanis.ContentSDK;
+using System.Threading;
 
-namespace K12.Assessment
+namespace Simulanis.ContentSDK.K12.Assessment
 {
     public class AssessmentManager : MonoBehaviour
     {
@@ -22,10 +24,11 @@ namespace K12.Assessment
         public TMP_Text SubmitText;
         public string SubmitTextContent;
         public string none;
-        [Space(20)]
-        [TextArea(0, 20)]
         [SerializeField]
-        private string Json;
+        GameObject scoreCard;
+        [Space(20)]
+        [SerializeField]
+        private string AppID;
         [Space(20)]
         [Header("----------------Assessment----------------")]
         [Space(20)]
@@ -39,14 +42,13 @@ namespace K12.Assessment
         [Space(20)]
         [SerializeField]
         private GameObject CF_ParentObj;
+        [SerializeField]
+        private GameObject NoneObject;
         [Space(20)]
         [Space(20)]
         [Header("----------------MCQ Type-Object----------------")]
         [SerializeField]
         private GameObject[] BoundingBoxObj;
-        [Space(20)]
-        //[SerializeField]
-        //private GameObject[] Options3DObj;
         [Space(20)]
         [Header("-----------------Buttons------------------")]
         [Space(20)]
@@ -76,10 +78,17 @@ namespace K12.Assessment
         private bool IsSubmitted;
         private int TotalQuestion = 0;
         private int CurrentQuestion = 0;
+        private int LanguageIndex = 0;
         private QuestionResponse questionResponse;
+        private SummaryResponse summaryResponse;
 
+        [SerializeField]
+        private GameObject AssessmentComplete;
+        public string currentMCQ;
         private List<TransformData> originalTransforms;
         private List<GameObject> Options3DObject_List;
+        public AssessmentTimer timer;
+        private CancellationTokenSource cancellationTokenSource;
         #endregion
 
         #region GET Response Classes
@@ -91,7 +100,7 @@ namespace K12.Assessment
         }
 
         [Serializable]
-        public class DataItem
+        public class Questions
         {
             public string uuid;
             public string text;
@@ -99,6 +108,13 @@ namespace K12.Assessment
             public List<Option> options;
             public string correctAnswer;
             public string response;
+        }
+
+        [Serializable]
+        public class DataItem
+        {
+            public string language;
+            public List<Questions> questions;
         }
 
         [Serializable]
@@ -121,6 +137,8 @@ namespace K12.Assessment
         [Serializable]
         public class SummaryResponse
         {
+            public string SessionStartAt;
+            public string SessionEndAt;
             public List<Response> response;
         }
         #endregion
@@ -147,6 +165,10 @@ namespace K12.Assessment
             Options3DObject_List.Clear();
             originalTransforms.Clear();
             ResetAll();
+            if (timer is null)
+            {
+                timer = FindObjectOfType<AssessmentTimer>();
+            }
         }
 
         #region Initialization
@@ -157,23 +179,34 @@ namespace K12.Assessment
             CurrentQuestion = 0;
             TotalQuestion = 0;
             questionResponse = new();
+            summaryResponse = new();
+            summaryResponse.SessionStartAt = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
             NextButton.onClick.AddListener(NextButtonHandler);
             PreviousButton.onClick.AddListener(PreviousButtonHandler);
             SubmitButton.onClick.AddListener(SubmitButtonHandler);
-
-            TextAsset json = Resources.Load<TextAsset>("Get"); //Only for testing purpose
-            Json = json.text;
-
-            questionResponse = JsonUtility.FromJson<QuestionResponse>(Json);
-            TotalQuestion = questionResponse.data.Count;
-            if (questionResponse.status)
+            scoreCard.SetActive(false);
+            ModuleManager.Instance.GetAssessment(AppID,
+            (data) =>
             {
-                PrepareAssessment();
-            }
-            else
+                Debug.Log($"Received Data: {data}");
+                questionResponse = JsonUtility.FromJson<QuestionResponse>(data);
+                string lan = LanguageSelectionManager.CurrentLanguage;
+                LanguageIndex = (lan == questionResponse.data[0].language ? 0 : 1);
+
+                TotalQuestion = questionResponse.data[LanguageIndex].questions.Count;
+                if (questionResponse.status)
+                {
+                    PrepareAssessment();
+                }
+                else
+                {
+                    Debug.Log("Error :  Failed to fetch assessment questions");
+                }
+            },
+            (error) =>
             {
-                Debug.Log("Error :  Failed to fetch assessment questions");
-            }
+                Debug.Log($"Error: {error}");
+            });            
         }
 
         void PrepareAssessment()
@@ -182,9 +215,9 @@ namespace K12.Assessment
             {
                 ResetAll();
             }
-            QuestionText.text = questionResponse.data[CurrentQuestion].text;
+            QuestionText.text = questionResponse.data[LanguageIndex].questions[CurrentQuestion].text;
             CountText.text = $"{CurrentQuestion + 1}/{TotalQuestion}";
-            string type = questionResponse.data[CurrentQuestion].type;
+            string type = questionResponse.data[LanguageIndex].questions[CurrentQuestion].type;
             if (type == "IMAGE")
             {
                 ButtonSpriteChanger(TypeImage,type);
@@ -201,7 +234,7 @@ namespace K12.Assessment
                 ButtonSpriteChanger(TypeText, type);
                 MCQTypeObjectHandler(TypeText);
             }
-
+            currentMCQ = type;
             IsSameQuestion = false;
         }
         #endregion
@@ -209,22 +242,20 @@ namespace K12.Assessment
         #region MCQ Image Type Handler
         void MCQTypeImageHandler(SpriteHolder sprite)
         {
-            string ans_uuid = questionResponse.data[CurrentQuestion].response;
+            string ans_uuid = questionResponse.data[LanguageIndex].questions[CurrentQuestion].response;
             if (!IsSubmitted)
             {
                 int count = 0;
-                foreach (Option opt in questionResponse.data[CurrentQuestion].options)
+                foreach (Option opt in questionResponse.data[LanguageIndex].questions[CurrentQuestion].options)
                 {
                     GameObject obj = OptionsObj[count];
                     ButtonSpriteChangerSelect(ans_uuid, count, obj, sprite);
 
                     Transform childImage = obj.transform.Find("Image");
-                    //childImage.gameObject.SetActive(true);
                     count++;
                 }
                 foreach (GameObject opt in OptionsObj)
                 {
-                    //opt.gameObject.SetActive(true);
                     Button obj = opt.GetComponent<Button>();
                     obj.enabled = true;
                 }
@@ -232,17 +263,15 @@ namespace K12.Assessment
             if (IsSubmitted)
             {
                 int count = 0;
-                foreach (Option opt in questionResponse.data[CurrentQuestion].options)
+                foreach (Option opt in questionResponse.data[LanguageIndex].questions[CurrentQuestion].options)
                 {
                     GameObject obj = OptionsObj[count];
                     ButtonSpriteChangerSubmit(ans_uuid, count, obj, sprite);
                     Transform childImage = obj.transform.Find("Image");
-                    //childImage.gameObject.SetActive(true);
                     count++;
                 }
                 foreach (GameObject opt in OptionsObj)
                 {
-                    //opt.gameObject.SetActive(true);
                     Button obj = opt.GetComponent<Button>();
                     obj.enabled = false;
                 }
@@ -254,7 +283,7 @@ namespace K12.Assessment
 
         void CollectOptionObjects()
         {
-            foreach (Option opt in questionResponse.data[CurrentQuestion].options)
+            foreach (Option opt in questionResponse.data[LanguageIndex].questions[CurrentQuestion].options)
             {
                 //Option UI controls for changing BG to selected/Default/Wrong/Right
                 Transform child = FindInChildrenRecursive(CF_ParentObj.transform, opt.option);                
@@ -264,19 +293,18 @@ namespace K12.Assessment
                     Debug.Log(obj.name);
                     Options3DObject_List.Add(obj);
                     originalTransforms.Add(new TransformData(child.position, child.transform.rotation, child.transform.localScale));
-                    //originalTransforms.Add(child);
                 }
             }
         }
 
         void MCQTypeObjectHandler(SpriteHolder sprite)
         {
-            string ans_uuid = questionResponse.data[CurrentQuestion].response;
+            string ans_uuid = questionResponse.data[LanguageIndex].questions[CurrentQuestion].response;
             if (!IsSubmitted)
             {
                 int count = 0;                
 
-                foreach (Option opt in questionResponse.data[CurrentQuestion].options)
+                foreach (Option opt in questionResponse.data[LanguageIndex].questions[CurrentQuestion].options)
                 {
                     //Option UI controls for changing BG to selected/Default/Wrong/Right
                     GameObject obj = OptionsObj[count];
@@ -310,7 +338,7 @@ namespace K12.Assessment
             if (IsSubmitted)
             {
                 int count = 0;
-                foreach (Option opt in questionResponse.data[CurrentQuestion].options)
+                foreach (Option opt in questionResponse.data[LanguageIndex].questions[CurrentQuestion].options)
                 {
                     GameObject obj = OptionsObj[count];
                     ButtonSpriteChangerSubmit(ans_uuid, count, obj,sprite);
@@ -337,11 +365,11 @@ namespace K12.Assessment
         #region MCQ Text Type Handler
         void MCQTypeTextHandler(SpriteHolder sprite)
         {
-            string ans_uuid = questionResponse.data[CurrentQuestion].response;
+            string ans_uuid = questionResponse.data[LanguageIndex].questions[CurrentQuestion].response;
             if (!IsSubmitted)
             {
                 int count = 0;
-                foreach (Option opt in questionResponse.data[CurrentQuestion].options)
+                foreach (Option opt in questionResponse.data[LanguageIndex].questions[CurrentQuestion].options)
                 {
                     GameObject obj = OptionsObj[count];
                     ButtonSpriteChangerSelect(ans_uuid, count, obj, sprite);
@@ -351,7 +379,7 @@ namespace K12.Assessment
             if (IsSubmitted)
             {
                 int count = 0;
-                foreach (Option opt in questionResponse.data[CurrentQuestion].options)
+                foreach (Option opt in questionResponse.data[LanguageIndex].questions[CurrentQuestion].options)
                 {
                     GameObject obj = OptionsObj[count];
                     ButtonSpriteChangerSubmit(ans_uuid, count, obj,sprite);
@@ -365,9 +393,9 @@ namespace K12.Assessment
 
         void ButtonSpriteChangerSubmit(string ans_uuid,int count , GameObject obj, SpriteHolder sprite)
         {
-            if (ans_uuid == questionResponse.data[CurrentQuestion].options[count].uuid)
+            if (ans_uuid == questionResponse.data[LanguageIndex].questions[CurrentQuestion].options[count].uuid)
             {
-                if (ans_uuid == questionResponse.data[CurrentQuestion].correctAnswer)
+                if (ans_uuid == questionResponse.data[LanguageIndex].questions[CurrentQuestion].correctAnswer)
                 {
                     obj.GetComponent<Image>().sprite = sprite.CorrectAnsSprite;
                 }
@@ -376,7 +404,7 @@ namespace K12.Assessment
                     obj.GetComponent<Image>().sprite = sprite.WrongAnsSprite;
                 }
             }
-            else if (questionResponse.data[CurrentQuestion].correctAnswer == questionResponse.data[CurrentQuestion].options[count].uuid)
+            else if (questionResponse.data[LanguageIndex].questions[CurrentQuestion].correctAnswer == questionResponse.data[LanguageIndex].questions[CurrentQuestion].options[count].uuid)
             {
                 obj.GetComponent<Image>().sprite = sprite.CorrectAnsSprite;
             }
@@ -387,7 +415,7 @@ namespace K12.Assessment
         }
         void ButtonSpriteChangerSelect(string ans_uuid,int count , GameObject obj, SpriteHolder sprite)
         {
-            if (ans_uuid == questionResponse.data[CurrentQuestion].options[count].uuid)
+            if (ans_uuid == questionResponse.data[LanguageIndex].questions[CurrentQuestion].options[count].uuid)
             {
                 obj.GetComponent<Image>().sprite = sprite.selectedSprite;
             }
@@ -397,7 +425,7 @@ namespace K12.Assessment
             }
         }
 
-        void NextButtonHandler()
+        public void NextButtonHandler()
         {
             if ((CurrentQuestion + 1) < TotalQuestion)
             {
@@ -425,20 +453,23 @@ namespace K12.Assessment
             Score();
             GameObject buttonS = SubmitButton.gameObject;
             buttonS.SetActive(false);
+            timer.StopTimer();
         }
         void Score()
         {
             int score = 0;
-            foreach (DataItem data in questionResponse.data)
+            foreach (Questions questions in questionResponse.data[LanguageIndex].questions)
             {
-                if(data.correctAnswer == data.response)
+                if(questions.correctAnswer == questions.response)
                 {
                     score++;
                 }
             }
 
-            SubmitText.text = SubmitTextContent + ". Your score is " + score + " Out of 6";
+            SubmitText.text = SubmitTextContent + $". Your score is <color=green>{score}</color> out of <color=red>{TotalQuestion}</color>";
             SubmitText.gameObject.SetActive(true);
+            scoreCard.SetActive(true);
+            AssessmentComplete.SetActive(true);
         }
         void StopGame()
         {
@@ -446,17 +477,18 @@ namespace K12.Assessment
         }
         void SubmitAssessmentSummary()
         {
-            SummaryResponse summary = new();
-            summary.response = new();
-            foreach (DataItem data in questionResponse.data)
+            summaryResponse.SessionEndAt = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+            summaryResponse.response = new();
+            foreach (Questions questions in questionResponse.data[LanguageIndex].questions)
             {
                 Response response = new();
-                response.questionId = data.uuid;
-                response.optionId = data.response;
-                summary.response.Add(response);
-                string res = JsonUtility.ToJson(summary);
-                Debug.Log(res);
+                response.questionId = questions.uuid;
+                response.optionId = questions.response;
+                summaryResponse.response.Add(response);
             }
+            string res = JsonUtility.ToJson(summaryResponse);
+            Debug.Log(res);
+            ModuleManager.Instance.SendAssessment(res);
         }
         void ResetAll()
         {
@@ -490,14 +522,11 @@ namespace K12.Assessment
                 Options3DObject_List.Clear();
                 originalTransforms.Clear();
             }
-            /*foreach(GameObject obj in Options3DObject_List)
-            {
-                obj.SetActive(false);
-            }*/
             foreach(GameObject obj in BoundingBoxObj)
             {
                 obj.SetActive(false);
             }
+            NoneObject.SetActive(false);
         }
         void ButtonDisable()
         {
@@ -528,7 +557,7 @@ namespace K12.Assessment
                 }
 
                 int sum = 0;
-                foreach (Option option in questionResponse.data[CurrentQuestion].options)
+                foreach (Option option in questionResponse.data[LanguageIndex].questions[CurrentQuestion].options)
                 {
                     GameObject obj = OptionsObj[sum];
                     obj.SetActive(true);
@@ -536,7 +565,7 @@ namespace K12.Assessment
                 }
 
                 int count = 0;
-                foreach (Option option in questionResponse.data[CurrentQuestion].options)
+                foreach (Option option in questionResponse.data[LanguageIndex].questions[CurrentQuestion].options)
                 {
                     GameObject obj = OptionsObj[count];
                     obj.GetComponent<Button>().enabled = true;
@@ -547,7 +576,7 @@ namespace K12.Assessment
                         // image
                         Transform childImage = obj.transform.Find("Image");
                         Image image = childImage.GetComponent<Image>();
-                        image.sprite = await DownloadImageAsSpriteAsync(option.option);
+                        image.sprite = await DownloadImageAsSpriteAsync(option.option,MCQType);
                         childText.gameObject.SetActive(false);
                     }
                     // text
@@ -566,15 +595,30 @@ namespace K12.Assessment
                 }
                 //All options Image turned ON immediately
                 int num = 0;
-                foreach (Option option in questionResponse.data[CurrentQuestion].options)
+                foreach (Option option in questionResponse.data[LanguageIndex].questions[CurrentQuestion].options)
                 {
                     GameObject obj = OptionsObj[num];
-                    if (MCQType == "IMAGE")
+                    // image
+                    Transform childImage = obj.transform.Find("Image");
+
+                    Transform childText = obj.transform.Find("Text");
+                    TMP_Text text = childText.GetComponent<TMP_Text>();
+                    if (currentMCQ == "IMAGE")
                     {
-                        // image
-                        Transform childImage = obj.transform.Find("Image");
+                       
                         childImage.gameObject.SetActive(true);
                     }
+                    else if (currentMCQ == "TEXT" || currentMCQ == "OBJECT")
+                    {
+                        Transform ImageWhite = obj.transform.Find("Image");
+                        Image imageWhite = ImageWhite.GetComponent<Image>();
+                        imageWhite.sprite = TypeText.ImageSprite;
+                        ImageWhite.gameObject.SetActive(true);
+                        childText.gameObject.SetActive(true);
+                        text.text = option.option;
+                        text.color = Color.black;
+                    }
+
                     num++;
                 }
             }
@@ -583,19 +627,34 @@ namespace K12.Assessment
         #endregion
 
         #region Common Functions
-        private async Task<Sprite> DownloadImageAsSpriteAsync(string url)
+        private async Task<Sprite> DownloadImageAsSpriteAsync(string url , string MCQ)
         {
+            // Cancel any ongoing operations if the question changes
+            cancellationTokenSource?.Cancel();
+            cancellationTokenSource = new CancellationTokenSource();
+            var token = cancellationTokenSource.Token;
+
             using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(url))
             {
                 var operation = request.SendWebRequest();
 
                 while (!operation.isDone)
                 {
+                    if (token.IsCancellationRequested)
+                    {
+                        Debug.Log("Download cancelled.");
+                        return null; // Exit if the operation is canceled
+                    }
                     await Task.Yield(); // Wait for the request to complete without blocking
                 }
-
-                if (request.result == UnityWebRequest.Result.Success)
+                if (token.IsCancellationRequested)
                 {
+                    Debug.Log("Download cancelled after completion.");
+                    return null;
+                }
+                if (request.result == UnityWebRequest.Result.Success && currentMCQ == "IMAGE")
+                {
+
                     // Convert the downloaded texture to a Sprite
                     Texture2D texture = DownloadHandlerTexture.GetContent(request);
                     return Sprite.Create(
@@ -607,9 +666,13 @@ namespace K12.Assessment
                 else
                 {
                     Debug.LogError($"Error downloading image: {request.error}");
+
+                   
                     return null;
                 }
+               
             }
+           
         }
 
         Transform FindInChildrenRecursive(Transform parent, string name)
@@ -617,7 +680,8 @@ namespace K12.Assessment
             // First, check if the current transform matches the name
             if (parent.name == name)
                 return parent;
-
+            if (name == none)
+                return NoneObject.transform;
             // Then, recursively check all child transforms
             foreach (Transform child in parent)
             {
@@ -634,9 +698,8 @@ namespace K12.Assessment
         #region Public Functions
         public void AnswerSelectionHandler(int optionNumber)
         {
-            questionResponse.data[CurrentQuestion].response = questionResponse.data[CurrentQuestion].options[optionNumber].uuid;
-            Debug.Log(questionResponse.data[CurrentQuestion].options[optionNumber].uuid);
-            Json = JsonUtility.ToJson(questionResponse);
+            questionResponse.data[LanguageIndex].questions[CurrentQuestion].response = questionResponse.data[LanguageIndex].questions[CurrentQuestion].options[optionNumber].uuid;
+            Debug.Log(questionResponse.data[LanguageIndex].questions[CurrentQuestion].options[optionNumber].uuid);
             IsSameQuestion = true;
             PrepareAssessment();
         }

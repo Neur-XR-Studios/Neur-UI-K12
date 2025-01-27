@@ -1,23 +1,25 @@
 {
-  "name": "com.neur.uitemplate",
-  "version": "1.1.4",
-  "displayName": "Neur UI",
-  "description": "Neur UI",
-  "unity": "2021.1",
-  "unityRelease": "0b5",
-  "keywords": [
-    "Neur",
-    "UI",
-    "sdk"
-  ],
-  "author": {
-    "name": "Neur"
-  },
-  "samples": [
-    {
-      "displayName": "Sample Scene",
-      "description": "This is a sample scene demonstrating the core features of the package.",
-      "path": "Samples~/SampleScene"
-    }
-  ]
+    "name": "com.simulanis.contentsdk",
+    "version": "1.1.5",
+    "displayName": "Simulanis UI",
+    "description": "Simulanis UI",
+    "unity": "2021.1",
+    "unityRelease": "0b5",
+    "keywords": [
+        "Simulanis",
+        "UI",
+        "sdk"
+    ],
+    "author": {
+        "name": "Simulanis",
+        "email": "developer@simulanis.com",
+        "url": "https://www.simulanis.com"
+    },
+    "samples": [
+        {
+            "displayName": "Sample Scene",
+            "description": "This is a sample scene demonstrating the core features of the package.",
+            "path": "Samples~/SampleScene"
+        }
+    ]
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace K12.HindiFontConverter
+namespace Simulanis.ContentSDK.K12.HindiFontConverter
 {
     public static class HindiConvert
 {

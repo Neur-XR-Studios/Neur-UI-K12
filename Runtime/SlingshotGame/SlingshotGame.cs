@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace K12.Assessment
+namespace Simulanis.ContentSDK.K12.Assessment
 {
     public class SlingshotGame : MonoBehaviour
     {
@@ -36,12 +36,19 @@ namespace K12.Assessment
         private Vector3 pullStartPosition;
         private Vector3 pullEndPosition;
         Vector3 direction;
-
+        [Range(0.1f, 5f)]
+        public float QuestionDelay = 0.5f;
+        public AssessmentManager assessmentManager;
         private void Awake()
         {
             if(effectAudioSource is null)
             {
                 effectAudioSource = GameObject.Find("Effect Sound").GetComponent<AudioSource>();
+            }
+
+            if(assessmentManager is null)
+            {
+                assessmentManager = FindObjectOfType<AssessmentManager>();
             }
         }
         private void Start()
@@ -109,6 +116,8 @@ namespace K12.Assessment
             {
                 PlayParticleEffectAt(targets[targetIndex].position);
                 Destroy(projectile);
+                yield return new WaitForSeconds(QuestionDelay);
+                assessmentManager.NextButtonHandler();
             }
             isProjectileMoving = false;
             SpawnLoadedProjectile();
@@ -157,7 +166,6 @@ namespace K12.Assessment
             loadedProjectile.transform.position = projectileSpawnPoint.position;
             RotateSlingshotTowards(targetIndex);
             StartCoroutine(PullProjectile(targetIndex));
-            PullAudio(pullSoundEffect);
         }
         // Coroutine to handle the pull and release sequence
         private IEnumerator PullProjectile(int targetIndex)
@@ -186,15 +194,18 @@ namespace K12.Assessment
 
         private IEnumerator AnimatePull()
         {
+
+            PullAudio(pullSoundEffect);
             // Smoothly move the projectile to the pull limit
             float pullProgress = 0f;
             while (pullProgress < ReleaseDelay)
             {
-                pullProgress += Time.deltaTime/* * pullSpeed*/;
+                pullProgress += Time.deltaTime * pullSpeed;
                 pullObject.transform.position = Vector3.Lerp(pullStartPosition, pullEndPosition, pullProgress);
                 loadedProjectile.transform.position = Vector3.Lerp(loadedProjectile.transform.position, projectileSpawnPoint.position, pullProgress);
                 yield return null;
             }
+
         }
 
         private IEnumerator AnimateRelease()

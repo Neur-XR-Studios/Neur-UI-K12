@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4407d06e8a8cb5944a967ed3c3bc4acf, type: 3}
   m_Name: TypeImage
   m_EditorClassIdentifier: 
-  NormalSprite: {fileID: 21300000, guid: b2ddaeb5dd844324f9ecb854afc01090, type: 3}
-  HighlightSprite: {fileID: 21300000, guid: e920905b83f7c1849b30e103d4c07646, type: 3}
-  selectedSprite: {fileID: 21300000, guid: 04d754e25a27e90478e9e98e0a3076f7, type: 3}
-  CorrectAnsSprite: {fileID: 21300000, guid: 51793d5846054784e98172cac5a7b701, type: 3}
-  WrongAnsSprite: {fileID: 21300000, guid: 2f922b9872358af4f87a187c2448dfb2, type: 3}
+  NormalSprite: {fileID: 21300000, guid: 376a975c940e86e48ab0bc68b6bdc4d5, type: 3}
+  HighlightSprite: {fileID: 21300000, guid: 1aee01ee81803b6459260102b38a813f, type: 3}
+  selectedSprite: {fileID: 21300000, guid: a48f6bb2de6fe784ca990731437b9df7, type: 3}
+  CorrectAnsSprite: {fileID: 21300000, guid: 281e64e023ed4c34f8373b53ca5ab6b4, type: 3}
+  WrongAnsSprite: {fileID: 21300000, guid: 11e0c444dd156414db3170c49bf68e55, type: 3}
   ImageSprite: {fileID: 21300000, guid: db899e1599359c54d981997ab4f24791, type: 3}

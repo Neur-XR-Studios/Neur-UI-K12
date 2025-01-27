@@ -1,11 +1,11 @@
-using K12.Assessment;
-using K12.UI;
+using Simulanis.ContentSDK.K12.Assessment;
+using Simulanis.ContentSDK.K12.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace K12.UI
+namespace Simulanis.ContentSDK.K12.UI
 {
     public class HomeManager : MonoBehaviour
     {

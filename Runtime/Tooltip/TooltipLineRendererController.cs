@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace K12.Assessment
+namespace Simulanis.ContentSDK.K12.Assessment
 {
     [RequireComponent(typeof(LineRenderer))]
     public class TooltipLineRendererController : MonoBehaviour

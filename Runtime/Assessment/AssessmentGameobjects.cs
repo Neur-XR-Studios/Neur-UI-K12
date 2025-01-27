@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using K12.UI;
+using Simulanis.ContentSDK.K12.UI;
 using UnityEngine.UI;
-namespace K12.Assessment
+namespace Simulanis.ContentSDK.K12.Assessment
 {
     public class AssessmentGameobjects : MonoBehaviour
     {
@@ -17,6 +17,7 @@ namespace K12.Assessment
         public AssessmentManager assessmentManager;
         public VoiceoverControllerScript audioMute;
         public UIAutomationController UIController;
+        public AssessmentTimer Timer;
         public Button mute, home;
         private void Awake()
         {
@@ -32,13 +33,18 @@ namespace K12.Assessment
             {
                 UIController = FindObjectOfType<UIAutomationController>();
             }
+            if (Timer is null)
+            {
+                Timer = FindObjectOfType<AssessmentTimer>();
+            }
             mute.onClick.AddListener(() => MuteUnMute(mute));
             home.onClick.AddListener(() => EnableHome());
-            
+            Timer.ResetTimer();
         }
 
         public void EnableAssessment()
         {
+            Timer.StartTimer();
             AssessmentPanel.gameObject.SetActive(true);
             AssessmentUICanvas.gameObject.SetActive(true);
             ObjectForAssessment.gameObject.SetActive(true);
@@ -49,6 +55,7 @@ namespace K12.Assessment
         }
         public void DisableAssessment()
         {
+            Timer.StopTimer();
             AssessmentPanel.gameObject.SetActive(false);
             AssessmentUICanvas.gameObject.SetActive(false);
             ObjectForAssessment.gameObject.SetActive(false);

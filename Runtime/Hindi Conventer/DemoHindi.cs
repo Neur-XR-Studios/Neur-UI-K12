@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using TMPro;
-using K12.HindiFontReplacer;
+using Simulanis.ContentSDK.K12.HindiFontReplacer;
 
-namespace K12.DemoHindiFont
+namespace Simulanis.ContentSDK.K12.DemoHindiFont
 {
     public class DemoHindi : MonoBehaviour
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Collections;
-namespace K12.UI
+namespace Simulanis.ContentSDK.K12.UI
 {
     public class UIAutomationController : MonoBehaviour
     {

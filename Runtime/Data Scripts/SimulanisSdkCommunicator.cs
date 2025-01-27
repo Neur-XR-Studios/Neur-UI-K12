@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine;
 using Simulanis.ContentSDK;
-namespace K12.UI
+namespace Simulanis.ContentSDK.K12.UI
 {
     public class SimulanisSdkCommunicator : MonoBehaviour
     {

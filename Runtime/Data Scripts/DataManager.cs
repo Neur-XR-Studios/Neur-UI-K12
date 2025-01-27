@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace K12.UI
+namespace Simulanis.ContentSDK.K12.UI
 {
     public class DataManager : MonoBehaviour
     {

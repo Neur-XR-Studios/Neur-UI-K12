@@ -2,7 +2,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-namespace K12.UI
+namespace Simulanis.ContentSDK.K12.UI
 {
     public class ToggleButton : MonoBehaviour
     {

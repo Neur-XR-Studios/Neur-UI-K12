@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace K12.Assessment
+namespace Simulanis.ContentSDK.K12.Assessment
 {
     public class ObjectTypeMCQHandler : MonoBehaviour
     {

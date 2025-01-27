@@ -1,8 +1,8 @@
 using UnityEngine;
 using TMPro;
-using K12.HindiFontConverter;
-using K12.UI;
-namespace K12.HindiFontReplacer
+using Simulanis.ContentSDK.K12.HindiFontConverter;
+using Simulanis.ContentSDK.K12.UI;
+namespace Simulanis.ContentSDK.K12.HindiFontReplacer
 {
     public class CharReplacerHindi : MonoBehaviour
     {
