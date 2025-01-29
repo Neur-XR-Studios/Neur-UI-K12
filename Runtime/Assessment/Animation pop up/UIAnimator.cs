@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace Simulanis.ContentSDK.K12.Assessment
 {
     public class UIAnimator : MonoBehaviour
@@ -14,49 +15,63 @@ namespace Simulanis.ContentSDK.K12.Assessment
             FadeOut
         }
 
-        public AnimationType animationType;
-        public RectTransform rectTransform;
-        public Image imageComponent; // For fade animations
-        public float animationDuration = 0.5f;
-        public float turnOffDelay = 0.5f; // Delay before turning off the object
-        public Vector2 slideOffset = new Vector2(500, 0);
+        [SerializeField] private AnimationType animationType;
+        [SerializeField] private RectTransform rectTransform;
+        [SerializeField] private Image imageComponent;
+        [SerializeField] private float animationDuration = 0.5f;
+        [SerializeField] private float turnOffDelay = 0.5f;
+        [SerializeField] private Vector2 slideOffset = new Vector2(500, 0);
+        [SerializeField] private bool isNeedToOff = false;
+        [SerializeField] private float shakeDuration = 0.2f;
+        [SerializeField] private float shakeMagnitude = 10f;
 
         private Vector2 initialPosition;
 
         private void Awake()
         {
-            if (rectTransform == null)
-                rectTransform = GetComponent<RectTransform>();
-
-            if (imageComponent == null)
-                imageComponent = GetComponent<Image>();
-
+            rectTransform ??= GetComponent<RectTransform>();
+            imageComponent ??= GetComponent<Image>();
             initialPosition = rectTransform.anchoredPosition;
+        }
+        private void Start()
+        {
             PlayAnimation();
         }
-
         public void PlayAnimation()
         {
             StopAllCoroutines();
+            StartCoroutine(Animate());
+        }
+
+        private IEnumerator Animate()
+        {
             switch (animationType)
             {
                 case AnimationType.PopUp:
-                    StartCoroutine(PopUpAnimation());
+                    yield return PopUpAnimation();
+                    yield return ShakeEffect();
                     break;
                 case AnimationType.SlideIn:
-                    StartCoroutine(SlideInAnimation());
+                    yield return SlideInAnimation();
+                    yield return ShakeEffect();
                     break;
                 case AnimationType.SlideOut:
-                    StartCoroutine(SlideOutAnimation());
+                    yield return SlideOutAnimation();
                     break;
                 case AnimationType.FadeIn:
-                    StartCoroutine(FadeInAnimation());
+                    yield return FadeInAnimation();
+                    yield return ShakeEffect();
                     break;
                 case AnimationType.FadeOut:
-                    StartCoroutine(FadeOutAndDisable());
+                    yield return FadeOutAnimation();
                     break;
             }
-            StartCoroutine(FadeOutAndDisable());
+
+            if (isNeedToOff)
+            {
+                yield return new WaitForSeconds(turnOffDelay);
+                gameObject.SetActive(false);
+            }
         }
 
         private IEnumerator PopUpAnimation()
@@ -66,8 +81,7 @@ namespace Simulanis.ContentSDK.K12.Assessment
 
             while (timeElapsed < animationDuration)
             {
-                float scale = Mathf.Lerp(0, 1, timeElapsed / animationDuration);
-                rectTransform.localScale = new Vector3(scale, scale, scale);
+                rectTransform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, timeElapsed / animationDuration);
                 timeElapsed += Time.deltaTime;
                 yield return null;
             }
@@ -107,53 +121,62 @@ namespace Simulanis.ContentSDK.K12.Assessment
 
         private IEnumerator FadeInAnimation()
         {
+            if (imageComponent == null) yield break;
+
             float timeElapsed = 0f;
-            if (imageComponent != null)
+            Color color = imageComponent.color;
+            color.a = 0;
+            imageComponent.color = color;
+
+            while (timeElapsed < animationDuration)
             {
-                Color color = imageComponent.color;
-                color.a = 0;
+                color.a = Mathf.Lerp(0, 1, timeElapsed / animationDuration);
                 imageComponent.color = color;
-
-                while (timeElapsed < animationDuration)
-                {
-                    color.a = Mathf.Lerp(0, 1, timeElapsed / animationDuration);
-                    imageComponent.color = color;
-                    timeElapsed += Time.deltaTime;
-                    yield return null;
-                }
-
-                color.a = 1;
-                imageComponent.color = color;
+                timeElapsed += Time.deltaTime;
+                yield return null;
             }
+
+            color.a = 1;
+            imageComponent.color = color;
         }
 
-        private IEnumerator FadeOutAndDisable()
+        private IEnumerator FadeOutAnimation()
         {
+            if (imageComponent == null) yield break;
 
-            // Wait for the additional delay
-            yield return new WaitForSeconds(turnOffDelay);
             float timeElapsed = 0f;
-            if (imageComponent != null)
+            Color color = imageComponent.color;
+            color.a = 1;
+            imageComponent.color = color;
+
+            while (timeElapsed < animationDuration)
             {
-                Color color = imageComponent.color;
-                color.a = 1;
+                color.a = Mathf.Lerp(1, 0, timeElapsed / animationDuration);
                 imageComponent.color = color;
-
-                while (timeElapsed < animationDuration)
-                {
-                    color.a = Mathf.Lerp(1, 0, timeElapsed / animationDuration);
-                    imageComponent.color = color;
-                    timeElapsed += Time.deltaTime;
-                    yield return null;
-                }
-
-                color.a = 0;
-                imageComponent.color = color;
+                timeElapsed += Time.deltaTime;
+                yield return null;
             }
 
+            color.a = 0;
+            imageComponent.color = color;
+        }
 
-            // Turn off the GameObject
-            gameObject.SetActive(false);
+        private IEnumerator ShakeEffect()
+        {
+            Vector2 originalPosition = rectTransform.anchoredPosition;
+            float elapsedTime = 0f;
+
+            while (elapsedTime < shakeDuration)
+            {
+                float offsetX = Random.Range(-shakeMagnitude, shakeMagnitude);
+                float offsetY = Random.Range(-shakeMagnitude, shakeMagnitude);
+                rectTransform.anchoredPosition = originalPosition + new Vector2(offsetX, offsetY);
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            rectTransform.anchoredPosition = originalPosition;
         }
     }
 }

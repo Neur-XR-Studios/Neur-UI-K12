@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Simulanis.ContentSDK.K12.UI;
 using UnityEngine.UI;
+using TMPro;
 namespace Simulanis.ContentSDK.K12.Assessment
 {
     public class AssessmentGameobjects : MonoBehaviour
@@ -13,7 +14,9 @@ namespace Simulanis.ContentSDK.K12.Assessment
             ,BoundingBoxes
             ,LandingMenu
             ,AssessmentBoard
-            ,HomePanel;
+            ,HomePanel
+            ,userGuide;
+        public TMP_Text Heading;
         public AssessmentManager assessmentManager;
         public VoiceoverControllerScript audioMute;
         public UIAutomationController UIController;
@@ -42,6 +45,11 @@ namespace Simulanis.ContentSDK.K12.Assessment
             Timer.ResetTimer();
         }
 
+        public void EnableUserGuide()
+        {
+            userGuide.SetActive(true);
+            LandingMenu.gameObject.SetActive(false);
+        }
         public void EnableAssessment()
         {
             Timer.StartTimer();
@@ -50,8 +58,9 @@ namespace Simulanis.ContentSDK.K12.Assessment
             ObjectForAssessment.gameObject.SetActive(true);
             AssessmentBoard.gameObject.SetActive(true);
             BoundingBoxes.gameObject.SetActive(true);
-            LandingMenu.gameObject.SetActive(false);
             assessmentManager.InitializeAssessment();
+            userGuide.SetActive(false);
+            Heading.text = DataManager.StaticVariables.COLUMN_02;
         }
         public void DisableAssessment()
         {

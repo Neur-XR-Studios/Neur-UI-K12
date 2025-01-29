@@ -26,11 +26,16 @@ namespace Simulanis.ContentSDK.K12.Assessment
         public string none;
         [SerializeField]
         GameObject scoreCard;
+        [SerializeField]
+        GameObject InfoPanel;
         [Space(20)]
         [SerializeField]
         private string AppID;
         [Space(20)]
         [Header("----------------Assessment----------------")]
+        [Space(20)]
+        [SerializeField]
+        public TMP_Text scoreText;
         [Space(20)]
         [SerializeField]
         private TMP_Text QuestionText;
@@ -74,20 +79,20 @@ namespace Simulanis.ContentSDK.K12.Assessment
         [Space(20)]
         [SerializeField]
         private GameObject Slingshot;
-        private bool IsSameQuestion;
+        public bool IsSameQuestion;
         private bool IsSubmitted;
         private int TotalQuestion = 0;
         private int CurrentQuestion = 0;
         private int LanguageIndex = 0;
         private QuestionResponse questionResponse;
         private SummaryResponse summaryResponse;
-
         [SerializeField]
         private GameObject AssessmentComplete;
         public string currentMCQ;
         private List<TransformData> originalTransforms;
         private List<GameObject> Options3DObject_List;
         public AssessmentTimer timer;
+        public SlingshotGame gameScript;
         private CancellationTokenSource cancellationTokenSource;
         #endregion
 
@@ -211,10 +216,12 @@ namespace Simulanis.ContentSDK.K12.Assessment
 
         void PrepareAssessment()
         {
+
             if (!IsSameQuestion)
             {
                 ResetAll();
             }
+
             QuestionText.text = questionResponse.data[LanguageIndex].questions[CurrentQuestion].text;
             CountText.text = $"{CurrentQuestion + 1}/{TotalQuestion}";
             string type = questionResponse.data[LanguageIndex].questions[CurrentQuestion].type;
@@ -302,7 +309,7 @@ namespace Simulanis.ContentSDK.K12.Assessment
             string ans_uuid = questionResponse.data[LanguageIndex].questions[CurrentQuestion].response;
             if (!IsSubmitted)
             {
-                int count = 0;                
+                int count = 0;
 
                 foreach (Option opt in questionResponse.data[LanguageIndex].questions[CurrentQuestion].options)
                 {
@@ -312,7 +319,7 @@ namespace Simulanis.ContentSDK.K12.Assessment
                     //Find Option Object to enable and attach to bounding box script
                     foreach (GameObject Option in Options3DObject_List)
                     {
-                        if(Option.name == opt.option)
+                        if (Option.name == opt.option)
                         {
                             Option.SetActive(true);
                             BoundingBox boundingBox = BoundingBoxObj[count].GetComponent<BoundingBox>();
@@ -329,7 +336,7 @@ namespace Simulanis.ContentSDK.K12.Assessment
                             {
                                 boundingBox.FitAndCenterObject(Option);
                             }
-                           
+
                         }
                     }
                     count++;
@@ -341,7 +348,7 @@ namespace Simulanis.ContentSDK.K12.Assessment
                 foreach (Option opt in questionResponse.data[LanguageIndex].questions[CurrentQuestion].options)
                 {
                     GameObject obj = OptionsObj[count];
-                    ButtonSpriteChangerSubmit(ans_uuid, count, obj,sprite);
+                    ButtonSpriteChangerSubmit(ans_uuid, count, obj, sprite);
                     //Find Option Object to enable and attach to bounding box script
                     foreach (GameObject Option in Options3DObject_List)
                     {
@@ -350,7 +357,7 @@ namespace Simulanis.ContentSDK.K12.Assessment
                             Option.SetActive(true);
                             BoundingBox boundingBox = BoundingBoxObj[count].GetComponent<BoundingBox>();
                             BoundingBoxObj[count].SetActive(true);
-                            if(!IsSameQuestion)
+                            if (!IsSameQuestion)
                             {
                                 boundingBox.FitAndCenterObject(Option);
                             }
@@ -451,9 +458,12 @@ namespace Simulanis.ContentSDK.K12.Assessment
             StopGame();
             SubmitText.gameObject.SetActive(false);
             Score();
-            GameObject buttonS = SubmitButton.gameObject;
-            buttonS.SetActive(false);
             timer.StopTimer();
+            SubmitButton.gameObject.SetActive(false);
+        }
+        public void ChangeQustionBool()
+        {
+            IsSameQuestion = false;
         }
         void Score()
         {
@@ -465,15 +475,28 @@ namespace Simulanis.ContentSDK.K12.Assessment
                     score++;
                 }
             }
+            //SubmitText.text = SubmitTextContent + $". Your score is <color=green>{}</color> out of <color=red>{}</color>";
 
-            SubmitText.text = SubmitTextContent + $". Your score is <color=green>{score}</color> out of <color=red>{TotalQuestion}</color>";
+            if (score > TotalQuestion/2)
+            {
+                scoreText.text = $"<size=150%><color=green>{score:D2}</color></size> / {TotalQuestion:D2}";
+
+            }
+            else
+            {
+                scoreText.text = $"<size=150%><color=red>{score:D2}</color></size> / {TotalQuestion:D2}";
+
+            }
+
             SubmitText.gameObject.SetActive(true);
             scoreCard.SetActive(true);
+            InfoPanel.SetActive(true);
             AssessmentComplete.SetActive(true);
         }
         void StopGame()
         {
             Slingshot.SetActive(false);
+            gameScript.enabled = false;
         }
         void SubmitAssessmentSummary()
         {
@@ -517,6 +540,7 @@ namespace Simulanis.ContentSDK.K12.Assessment
                     obj.transform.position = targetTransform.position;
                     obj.transform.rotation = targetTransform.rotation;
                     obj.transform.localScale = targetTransform.scale;
+                    obj.SetActive(false);
                     Count++;
                 }
                 Options3DObject_List.Clear();
@@ -634,7 +658,8 @@ namespace Simulanis.ContentSDK.K12.Assessment
             cancellationTokenSource = new CancellationTokenSource();
             var token = cancellationTokenSource.Token;
 
-            using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(url))
+            string uniqueUrl = url + "?nocache=" + System.DateTime.Now.Ticks;
+            using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(uniqueUrl))
             {
                 var operation = request.SendWebRequest();
 

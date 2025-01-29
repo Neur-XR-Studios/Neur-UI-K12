@@ -7,6 +7,8 @@ namespace Simulanis.ContentSDK.K12.Assessment
 {
     public class SlingshotGame : MonoBehaviour
     {
+        [Header("SlingShot Transform")]
+        public GameObject SlingShot;
         [Header("Audio Settings")]
         public AudioSource effectAudioSource;
         public AudioClip pullSoundEffect;
@@ -117,7 +119,8 @@ namespace Simulanis.ContentSDK.K12.Assessment
                 PlayParticleEffectAt(targets[targetIndex].position);
                 Destroy(projectile);
                 yield return new WaitForSeconds(QuestionDelay);
-                assessmentManager.NextButtonHandler();
+               assessmentManager.NextButtonHandler();
+                DisableButtons(true);
             }
             isProjectileMoving = false;
             SpawnLoadedProjectile();
@@ -178,7 +181,7 @@ namespace Simulanis.ContentSDK.K12.Assessment
         {
             Vector3 direction = (targets[targetIndex].position - projectileSpawnPoint.position).normalized;
             float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0f, angle + 180f, 0f);
+            SlingShot.transform.rotation = Quaternion.Euler(0f, angle + 180f, 0f);
 
 
 
@@ -219,8 +222,7 @@ namespace Simulanis.ContentSDK.K12.Assessment
                 loadedProjectile.transform.position = Vector3.Lerp(loadedProjectile.transform.position, projectileSpawnPoint.position, pullProgress*2.5f);
                 yield return null;
             }
-            isPulling = false;
-            DisableButtons(true);
+            isPulling = false;            
         }
 
         private void DisableButtons(bool value)

@@ -14964,8 +14964,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: K12.Assessment.AssessmentGameobjects, K12.UI
-        m_MethodName: EnableAssessment
+        m_TargetAssemblyTypeName: Simulanis.ContentSDK.K12.Assessment.AssessmentGameobjects,
+          K12.UI
+        m_MethodName: EnableUserGuide
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

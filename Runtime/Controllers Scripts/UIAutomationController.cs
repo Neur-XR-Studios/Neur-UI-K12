@@ -458,11 +458,11 @@ namespace Simulanis.ContentSDK.K12.UI
         }
         public void Pause()
         {
-            Time.timeScale = 0;
+            Time.timeScale = 0.0001f;
         }
         public void UnPause()
         {
-            Time.timeScale = 0.0001f;
+            Time.timeScale = 1f;
         }
         public void Hold_CF()
         {
