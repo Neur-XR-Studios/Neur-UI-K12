@@ -568,6 +568,8 @@ namespace Simulanis.ContentSDK.K12.Assessment
                 foreach (GameObject opt in OptionsObj)
                 {
                     Button obj = opt.GetComponent<Button>();
+
+                    obj.interactable = false;
                     SpriteState spriteState = obj.spriteState;
                     // Update the sprite states
                     spriteState.highlightedSprite = sprite.HighlightSprite;
@@ -576,7 +578,7 @@ namespace Simulanis.ContentSDK.K12.Assessment
                     spriteState.disabledSprite = sprite.NormalSprite;
                     // Apply the updated SpriteState back to the button
                     obj.spriteState = spriteState;
-
+                    obj.interactable = true;
                     opt.GetComponent<Image>().sprite = sprite.NormalSprite;
                 }
 
@@ -629,7 +631,6 @@ namespace Simulanis.ContentSDK.K12.Assessment
                     TMP_Text text = childText.GetComponent<TMP_Text>();
                     if (currentMCQ == "IMAGE")
                     {
-                       
                         childImage.gameObject.SetActive(true);
                     }
                     else if (currentMCQ == "TEXT" || currentMCQ == "OBJECT")
