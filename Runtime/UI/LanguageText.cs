@@ -6,8 +6,10 @@ namespace Simulanis.ContentSDK.K12.UI
     public class LanguageText : MonoBehaviour
     {
         [SerializeField]
+        [TextArea (0,10)]
         private string EnglishText;
         [SerializeField]
+        [TextArea(0, 10)]
         private string HindiText;
         // Start is called before the first frame update
         private void Awake()

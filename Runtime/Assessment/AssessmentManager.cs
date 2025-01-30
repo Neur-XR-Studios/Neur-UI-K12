@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Simulanis.ContentSDK;
 using System.Threading;
+using Simulanis.ContentSDK.K12.UI;
 
 namespace Simulanis.ContentSDK.K12.Assessment
 {
@@ -196,7 +197,8 @@ namespace Simulanis.ContentSDK.K12.Assessment
                 Debug.Log($"Received Data: {data}");
                 questionResponse = JsonUtility.FromJson<QuestionResponse>(data);
                 string lan = LanguageSelectionManager.CurrentLanguage;
-                LanguageIndex = (lan == questionResponse.data[0].language ? 0 : 1);
+                lan = "Hindi";
+                LanguageIndex = (lan.ToLower() == questionResponse.data[0].language.ToLower() ? 0 : 1);
 
                 TotalQuestion = questionResponse.data[LanguageIndex].questions.Count;
                 if (questionResponse.status)
@@ -243,6 +245,7 @@ namespace Simulanis.ContentSDK.K12.Assessment
             }
             currentMCQ = type;
             IsSameQuestion = false;
+            EventManager.Broadcast(EVENTS.CORRECT_HINDI);
         }
         #endregion
 
@@ -594,7 +597,10 @@ namespace Simulanis.ContentSDK.K12.Assessment
                 foreach (Option option in questionResponse.data[LanguageIndex].questions[CurrentQuestion].options)
                 {
                     GameObject obj = OptionsObj[count];
-                    obj.GetComponent<Button>().enabled = true;
+                    if(!IsSubmitted)
+                    {
+                        obj.GetComponent<Button>().enabled = true;
+                    }
                     Transform childText = obj.transform.Find("Text");
                     TMP_Text text = childText.GetComponent<TMP_Text>();
                     if (MCQType == "IMAGE")

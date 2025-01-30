@@ -28,16 +28,16 @@ namespace Simulanis.ContentSDK.K12.UI
         {
             string url = string.Empty;
             CsvHelper.Init();
-            string lan = LanguageSelectionManager.CurrentLanguage;
-            //lan = "Hindi";
-            if (lan == "English")
+            string lan = LanguageSelectionManager.CurrentLanguage.ToLower();
+            lan = "hindi";
+            if (lan == "english")
             {
                 DataManager.StaticVariables.IS_ENGLISH = true;
                 //url = EnglishCsv_url;
                 CsvName = "csvData_Eng";
                 EventManager.Broadcast(EVENTS.CHANGE_LANGUAGE);
             }
-            else if (lan == "Hindi")
+            else if (lan == "hindi")
             {
                 DataManager.StaticVariables.IS_ENGLISH = false;
                 //url = HindiCsv_url;
