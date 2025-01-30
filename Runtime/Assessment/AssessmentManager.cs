@@ -197,7 +197,7 @@ namespace Simulanis.ContentSDK.K12.Assessment
                 Debug.Log($"Received Data: {data}");
                 questionResponse = JsonUtility.FromJson<QuestionResponse>(data);
                 string lan = LanguageSelectionManager.CurrentLanguage;
-                lan = "Hindi";
+               // lan = "Hindi";
                 LanguageIndex = (lan.ToLower() == questionResponse.data[0].language.ToLower() ? 0 : 1);
 
                 TotalQuestion = questionResponse.data[LanguageIndex].questions.Count;
