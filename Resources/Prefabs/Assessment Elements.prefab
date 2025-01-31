@@ -5211,6 +5211,8 @@ GameObject:
   - component: {fileID: 1531069154490924739}
   - component: {fileID: 1531069154490924737}
   - component: {fileID: 1531069154490924736}
+  - component: {fileID: 1150345656}
+  - component: {fileID: 1150345657}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -5336,6 +5338,34 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1150345656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1531069154490924738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06b80e40639e5ae4d934db20e6b0012b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Convertedvalue: 
+  OriginalText: 
+--- !u!114 &1150345657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1531069154490924738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0852876dce3bd294fbe30e1ed71fcc50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnglishText: None of these
+  HindiText: "\u092A\u0947\uE7D4\u0940 \u0921\u093F\u0936"
 --- !u!1 &1531069154804148960
 GameObject:
   m_ObjectHideFlags: 0
@@ -5349,7 +5379,7 @@ GameObject:
   - component: {fileID: 1531069154804148975}
   - component: {fileID: 1531069154804148974}
   m_Layer: 0
-  m_Name: None Of these
+  m_Name: None
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6007,7 +6037,7 @@ MonoBehaviour:
   TypeText: {fileID: 11400000, guid: 82a2bb748469d6b4a8d3444e941924f9, type: 2}
   SubmitText: {fileID: 331630076}
   SubmitTextContent: Assessment submitted
-  none: None Of these
+  none: None
   scoreCard: {fileID: 7005295361556938514}
   InfoPanel: {fileID: 103540056}
   AppID: edd905c4-3547-4d89-94cb-38d9e9ce35a0

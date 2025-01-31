@@ -197,7 +197,7 @@ namespace Simulanis.ContentSDK.K12.Assessment
                 Debug.Log($"Received Data: {data}");
                 questionResponse = JsonUtility.FromJson<QuestionResponse>(data);
                 string lan = LanguageSelectionManager.CurrentLanguage;
-               // lan = "Hindi";
+                //lan = "Hindi";
                 LanguageIndex = (lan.ToLower() == questionResponse.data[0].language.ToLower() ? 0 : 1);
 
                 TotalQuestion = questionResponse.data[LanguageIndex].questions.Count;
@@ -293,7 +293,7 @@ namespace Simulanis.ContentSDK.K12.Assessment
 
         void CollectOptionObjects()
         {
-            foreach (Option opt in questionResponse.data[LanguageIndex].questions[CurrentQuestion].options)
+            foreach (Option opt in questionResponse.data[1].questions[CurrentQuestion].options)
             {
                 //Option UI controls for changing BG to selected/Default/Wrong/Right
                 Transform child = FindInChildrenRecursive(CF_ParentObj.transform, opt.option);                
@@ -314,7 +314,7 @@ namespace Simulanis.ContentSDK.K12.Assessment
             {
                 int count = 0;
 
-                foreach (Option opt in questionResponse.data[LanguageIndex].questions[CurrentQuestion].options)
+                foreach (Option opt in questionResponse.data[1].questions[CurrentQuestion].options)
                 {
                     //Option UI controls for changing BG to selected/Default/Wrong/Right
                     GameObject obj = OptionsObj[count];
@@ -348,7 +348,7 @@ namespace Simulanis.ContentSDK.K12.Assessment
             if (IsSubmitted)
             {
                 int count = 0;
-                foreach (Option opt in questionResponse.data[LanguageIndex].questions[CurrentQuestion].options)
+                foreach (Option opt in questionResponse.data[1].questions[CurrentQuestion].options)
                 {
                     GameObject obj = OptionsObj[count];
                     ButtonSpriteChangerSubmit(ans_uuid, count, obj, sprite);
