@@ -29,7 +29,7 @@ namespace Simulanis.ContentSDK.K12.UI
             string url = string.Empty;
             CsvHelper.Init();
             string lan = LanguageSelectionManager.CurrentLanguage.ToLower();
-           // lan = "hindi";
+            lan = "hindi";
             if (lan == "english")
             {
                 DataManager.StaticVariables.IS_ENGLISH = true;
