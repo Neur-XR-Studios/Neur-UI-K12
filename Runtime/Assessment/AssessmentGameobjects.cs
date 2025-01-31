@@ -60,7 +60,7 @@ namespace Simulanis.ContentSDK.K12.Assessment
             BoundingBoxes.gameObject.SetActive(true);
             assessmentManager.InitializeAssessment();
             userGuide.SetActive(false);
-            Heading.text = DataManager.StaticVariables.COLUMN_02;
+          //  Heading.text = DataManager.StaticVariables.COLUMN_02;
         }
         public void DisableAssessment()
         {

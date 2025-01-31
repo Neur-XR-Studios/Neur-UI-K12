@@ -37,7 +37,7 @@ namespace Simulanis.ContentSDK.K12.UI
         void Preparevideo()
         {
             string lan = LanguageSelectionManager.CurrentLanguage.ToLower();
-            lan = "hindi";
+           // lan = "hindi";
             videoPlayer.clip = clipList[CurrentVideo];
             videoPlayer.Play();
             if (lan == "english")

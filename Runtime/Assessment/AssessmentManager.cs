@@ -360,6 +360,15 @@ namespace Simulanis.ContentSDK.K12.Assessment
                             Option.SetActive(true);
                             BoundingBox boundingBox = BoundingBoxObj[count].GetComponent<BoundingBox>();
                             BoundingBoxObj[count].SetActive(true);
+
+                            if (Option.name == none)
+                            {
+                                boundingBox.isRotating = false;
+                            }
+                            else
+                            {
+                                boundingBox.isRotating = true;
+                            }
                             if (!IsSameQuestion)
                             {
                                 boundingBox.FitAndCenterObject(Option);
@@ -463,6 +472,9 @@ namespace Simulanis.ContentSDK.K12.Assessment
             Score();
             timer.StopTimer();
             SubmitButton.gameObject.SetActive(false);
+
+            NextButton.enabled = true;
+            PreviousButton.enabled = true;
         }
         public void ChangeQustionBool()
         {

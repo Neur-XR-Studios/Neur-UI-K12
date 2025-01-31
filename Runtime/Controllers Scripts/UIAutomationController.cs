@@ -31,6 +31,8 @@ namespace Simulanis.ContentSDK.K12.UI
         public GameObject ActivityMenu_Obj;
         [Space(10)]
         public TMP_Text ActivityHeading_Text;
+        [Space(10)]
+        public TMP_Text AssessmentHeading_Text;
         [Space(20)]
         [Header("Welcome Page")]
         [Space(10)]
@@ -242,6 +244,8 @@ namespace Simulanis.ContentSDK.K12.UI
             string content = DataManager.StaticVariables.COLUMN_04;
             MainInfo_Text.text = content;
             ActivityHeading_Text.text = DataManager.StaticVariables.COLUMN_02;
+
+            AssessmentHeading_Text.text = DataManager.StaticVariables.COLUMN_02;
             CorrectHindiText();
 
             //Update icon image
