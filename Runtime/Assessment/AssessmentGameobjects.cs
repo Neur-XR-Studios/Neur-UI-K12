@@ -22,6 +22,9 @@ namespace Simulanis.ContentSDK.K12.Assessment
         public UIAutomationController UIController;
         public AssessmentTimer Timer;
         public Button mute, home;
+
+        public Camera MainCamera;
+        public Transform AssessmentCamTrans;
         private void Awake()
         {
             if(assessmentManager is null)
@@ -60,6 +63,10 @@ namespace Simulanis.ContentSDK.K12.Assessment
             BoundingBoxes.gameObject.SetActive(true);
             assessmentManager.InitializeAssessment();
             userGuide.SetActive(false);
+
+            MainCamera.transform.position = AssessmentCamTrans.position;
+            MainCamera.transform.rotation = AssessmentCamTrans.rotation;
+
           //  Heading.text = DataManager.StaticVariables.COLUMN_02;
         }
         public void DisableAssessment()
