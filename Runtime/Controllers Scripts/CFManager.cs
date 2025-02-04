@@ -49,7 +49,9 @@ namespace Simulanis.ContentSDK.K12.UI
         void ShowDescription()
         {
             TMP_Text textComponents = gameObject.GetComponentInChildren<TMP_Text>();
-            DataManager.StaticVariables.CF_OBJECT_NAME = textComponents.text;
+            string objectName = textComponents.gameObject.name;
+            DataManager.StaticVariables.CF_OBJECT_NAME = objectName;
+            //DataManager.StaticVariables.CF_OBJECT_NAME = textComponents.text;
             EventManager.Broadcast(EVENTS.UPDATE_CF_UI);
         }
     }

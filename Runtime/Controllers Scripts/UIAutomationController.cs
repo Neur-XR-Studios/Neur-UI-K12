@@ -121,10 +121,6 @@ namespace Simulanis.ContentSDK.K12.UI
         #region Initialization
         private void Start()
         {
-            Initialisation();
-        }
-        void Initialisation()
-        {
             IsActivity = true;
             IsPromptEnabled = false;
             Is_CF_Holded = false;
@@ -141,7 +137,7 @@ namespace Simulanis.ContentSDK.K12.UI
             PanelType = PANEL_TYPE.LANDING;
             subSteps = new();
             subSteps.Clear();
-            EnableLandingMenu();
+            //EnableLandingMenu();
             Colunm_03.Clear();
             Colunm_04.Clear();
 
@@ -157,6 +153,11 @@ namespace Simulanis.ContentSDK.K12.UI
             CF_Button.onClick.AddListener(CFButtonClickHandler);
             MainInfo_Text.text = string.Empty;
             ActivityHeading_Text.text = string.Empty;
+            //Initialisation();
+        }
+        public void Initialisation()
+        {
+            EnableLandingMenu();
         }
         #endregion
 
@@ -299,7 +300,7 @@ namespace Simulanis.ContentSDK.K12.UI
         {
             CfMenu_Obj.SetActive(true);
             string objectName = DataManager.StaticVariables.CF_OBJECT_NAME;
-            int index = objectNames.IndexOf(objectName);
+            int index = objectIconNames.IndexOf(objectName);
             ObjectInfo_Text.text = objectInfos[index];
             ObjectIcon_Img.sprite = Resources.Load<Sprite>($"Images/{objectIconNames[index].Trim()}"); //Update icon image
             CorrectHindiText();
@@ -323,6 +324,7 @@ namespace Simulanis.ContentSDK.K12.UI
                 GameObject cfObject = CF_Objects[i];
                 cfObject.AddComponent<CFManager>();
                 TMP_Text textComponents = cfObject.GetComponentInChildren<TMP_Text>();
+                textComponents.name = objectIconNames[i];
                 textComponents.text = objectNames[i];
             }
             CorrectHindiText();

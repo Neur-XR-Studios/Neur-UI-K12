@@ -32,21 +32,25 @@ namespace Simulanis.ContentSDK.K12.UI
         {
             foreach (Button btn in homeButtons)
             {
+                if(btn is not null)
                 btn.onClick.AddListener(() => EnableHome());
             }
 
             foreach (Button btn in backButtons)
             {
-                btn.onClick.AddListener(() => Back());
+                if (btn is not null)
+                    btn.onClick.AddListener(() => Back());
             }
 
             foreach (Button btn in UnPauseNoButton)
             {
-                btn.onClick.AddListener(() => UnPauseNo());
+                if (btn is not null)
+                    btn.onClick.AddListener(() => UnPauseNo());
             }
             foreach (Button btn in HomeYesButton)
             {
-                btn.onClick.AddListener(() => ChangeScene());
+                if (btn is not null)
+                    btn.onClick.AddListener(() => ChangeScene());
             }
         }
 
@@ -54,6 +58,8 @@ namespace Simulanis.ContentSDK.K12.UI
         {
             HomePanel.SetActive(true);
             UIAutomationController.Pause();
+            EventManager.Broadcast(EVENTS.CORRECT_HINDI);
+
         }
 
         public void Back()

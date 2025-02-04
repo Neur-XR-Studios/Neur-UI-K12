@@ -81,8 +81,17 @@ namespace Simulanis.ContentSDK.K12.Assessment
         [SerializeField]
         private GameObject Slingshot;
         public bool IsSameQuestion;
+        [Space(20)]
+        [Header("----------------- Sound ------------------")]
+        [Space(20)]
+        [SerializeField]
+        private AudioClip Pass;
+        [SerializeField]
+        private AudioClip Fail;
+        [SerializeField]
+        AudioSource EffectSound;
         private bool IsSubmitted;
-        private int TotalQuestion = 0;
+        private float TotalQuestion = 0f;
         private int CurrentQuestion = 0;
         private int LanguageIndex = 0;
         private QuestionResponse questionResponse;
@@ -95,6 +104,8 @@ namespace Simulanis.ContentSDK.K12.Assessment
         public AssessmentTimer timer;
         public SlingshotGame gameScript;
         private CancellationTokenSource cancellationTokenSource;
+
+
         #endregion
 
         #region GET Response Classes
@@ -197,7 +208,18 @@ namespace Simulanis.ContentSDK.K12.Assessment
                 Debug.Log($"Received Data: {data}");
                 questionResponse = JsonUtility.FromJson<QuestionResponse>(data);
                 string lan = LanguageSelectionManager.CurrentLanguage;
-                lan = "Hindi";
+                if(lan == null)
+                {
+                    if (DataManager.StaticVariables.IS_ENGLISH == true)
+                    {
+                        lan = "english";
+                    }
+                    else if(DataManager.StaticVariables.IS_ENGLISH == false)
+                    {
+                        lan = "hindi";
+                    }
+                }                
+                //lan = "Hindi";
                 LanguageIndex = (lan.ToLower() == questionResponse.data[0].language.ToLower() ? 0 : 1);
 
                 TotalQuestion = questionResponse.data[LanguageIndex].questions.Count;
@@ -492,14 +514,16 @@ namespace Simulanis.ContentSDK.K12.Assessment
             }
             //SubmitText.text = SubmitTextContent + $". Your score is <color=green>{}</color> out of <color=red>{}</color>";
 
-            if (score > TotalQuestion/2)
+            if (score >= TotalQuestion/2f)
             {
-                scoreText.text = $"<size=150%><color=green>{score:D2}</color></size> / {TotalQuestion:D2}";
+                scoreText.text = $"<size=150%><color=green>{score:0}</color></size> / {TotalQuestion:0}";
+                EffectSound.PlayOneShot(Pass);
 
             }
             else
             {
-                scoreText.text = $"<size=150%><color=red>{score:D2}</color></size> / {TotalQuestion:D2}";
+                scoreText.text = $"<size=150%><color=red>{score:0}</color></size> / {TotalQuestion:0}";
+                EffectSound.PlayOneShot(Fail);
 
             }
 

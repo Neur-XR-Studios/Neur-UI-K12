@@ -1,20 +1,18 @@
 using System.Collections;
 using UnityEngine.Networking;
 using UnityEngine;
+using UnityEngine.Events;
 using Simulanis.ContentSDK;
 using Simulanis.ContentSDK.K12.HindiFontReplacer;
 //using UnityEditor.PackageManager.Requests;
 namespace Simulanis.ContentSDK.K12.UI
 {
-
     public class AutomationControllerScript : MonoBehaviour
     {
-        public CharReplacerHindi CharReplacerHindi;
+        public GameObject UI;
+        public UnityEvent InitializeActivity;
         CsvTable table;
-        //readonly string HindiCsv_url = Application.streamingAssetsPath + "/csvData_Hi.csv";
-        //readonly string EnglishCsv_url = Application.streamingAssetsPath + "/csvData_Eng.csv";
         private int CurrentCount = 1;
-        //private int TotalStep = 0;
         private bool IsConclusionStep = false;
         private string CsvName = string.Empty;
 
@@ -28,58 +26,57 @@ namespace Simulanis.ContentSDK.K12.UI
         {
             string url = string.Empty;
             CsvHelper.Init();
-            string lan = LanguageSelectionManager.CurrentLanguage.ToLower();
-            lan = "hindi";
-            if (lan == "english")
+            string lan = LanguageSelectionManager.CurrentLanguage;
+            if(lan == null)
+            {
+                UI.gameObject.SetActive(true);
+            }
+            else
+            {
+                if (lan.ToLower() == "english")
+                {
+                    DataManager.StaticVariables.IS_ENGLISH = true;
+                    CsvName = "csvData_Eng";
+                    EventManager.Broadcast(EVENTS.CHANGE_LANGUAGE);
+                }
+                else if (lan.ToLower() == "hindi")
+                {
+                    DataManager.StaticVariables.IS_ENGLISH = false;
+                    CsvName = "csvData_Hi";
+                    EventManager.Broadcast(EVENTS.CHANGE_LANGUAGE);
+                }
+                LoadCsvFromResources();                
+            }
+        }
+        #endregion
+
+        public void CustomLanguageSelected(string lan)
+        {
+            if (lan.ToLower() == "english")
             {
                 DataManager.StaticVariables.IS_ENGLISH = true;
-                //url = EnglishCsv_url;
                 CsvName = "csvData_Eng";
                 EventManager.Broadcast(EVENTS.CHANGE_LANGUAGE);
             }
-            else if (lan == "hindi")
+            else if (lan.ToLower() == "hindi")
             {
                 DataManager.StaticVariables.IS_ENGLISH = false;
-                //url = HindiCsv_url;
                 CsvName = "csvData_Hi";
                 EventManager.Broadcast(EVENTS.CHANGE_LANGUAGE);
             }
             LoadCsvFromResources();
-            //StartCoroutine(LoadStreamingAsset(url));
-
         }
-        #endregion
 
         #region Load CSV
         void LoadCsvFromResources()
         {
             TextAsset text = Resources.Load<TextAsset>(CsvName);
             table = CsvHelper.Create(text.name, text.text);
-            //TotalStep = table.RowCount;
 
             parseColumnData();
             ParseRowData();
+            InitializeActivity.Invoke();
         }
-
-        /*IEnumerator LoadStreamingAsset(string url)
-        {
-            UnityWebRequest request = UnityWebRequest.Get(url);
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.Success)
-            {
-                string csvData = request.downloadHandler.text;
-                TextAsset text = new TextAsset(csvData);
-                table = CsvHelper.Create(text.name, text.text);
-                //TotalStep = table.RowCount;
-            }
-            else
-            {
-                Debug.LogError("Failed to load file: " + request.error);
-            }
-            parseColumnData();
-            ParseRowData();
-        }*/
         #endregion
 
         #region CSV Reader
@@ -138,7 +135,6 @@ namespace Simulanis.ContentSDK.K12.UI
                 Row++;
             }
             DataManager.StaticVariables.STEP_COUNT = CurrentCount - 1;
-            //Debug.Log(DataManager.StaticVariables.STEP_COUNT + "Current Step");
             CurrentCount++;
             StepInitialisation();
         }
@@ -151,7 +147,6 @@ namespace Simulanis.ContentSDK.K12.UI
             if (prompt == string.Empty || prompt == "")
             {
                 EventManager.Broadcast(EVENTS.STEP);
-                //EventManager.Broadcast(EVENTS.UPDATE_UI);
             }
             else
             {

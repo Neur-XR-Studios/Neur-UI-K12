@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 7003468651685186214}
   - component: {fileID: 7003468651685186212}
   - component: {fileID: 2879866205180437518}
+  - component: {fileID: 63002709277975260}
   m_Layer: 5
   m_Name: Text (Legacy)
   m_TagString: Untagged
@@ -146,7 +147,7 @@ MonoBehaviour:
   m_text: EVOPRATIONATION
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 70facb9dad6d7469f80e6dbb5ee35850, type: 2}
-  m_sharedMaterial: {fileID: -2527325224109500662, guid: c386229e9a60f7648b637cf3c344a6c8,
+  m_sharedMaterial: {fileID: 1160909457540768880, guid: 70facb9dad6d7469f80e6dbb5ee35850,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -181,7 +182,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: -5
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -210,6 +211,20 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &63002709277975260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7003468651685186217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06b80e40639e5ae4d934db20e6b0012b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Convertedvalue: 
+  OriginalText: 

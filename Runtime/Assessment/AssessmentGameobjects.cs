@@ -15,14 +15,16 @@ namespace Simulanis.ContentSDK.K12.Assessment
             ,LandingMenu
             ,AssessmentBoard
             ,HomePanel
-            ,userGuide;
+            ,userGuide
+            ,CFinstance;
         public TMP_Text Heading;
         public AssessmentManager assessmentManager;
         public VoiceoverControllerScript audioMute;
         public UIAutomationController UIController;
         public AssessmentTimer Timer;
         public Button mute, home;
-
+        public Slider POVSlider;
+        public TMP_Text POV;
         public Camera MainCamera;
         public Transform AssessmentCamTrans;
         private void Awake()
@@ -45,12 +47,15 @@ namespace Simulanis.ContentSDK.K12.Assessment
             }
             mute.onClick.AddListener(() => MuteUnMute(mute));
             home.onClick.AddListener(() => EnableHome());
+            POVSlider.onValueChanged.AddListener(_ => ShowPOV());
             Timer.ResetTimer();
         }
 
         public void EnableUserGuide()
         {
             userGuide.SetActive(true);
+            CFinstance.SetActive(true);
+            this.gameObject.SetActive(true);
             LandingMenu.gameObject.SetActive(false);
         }
         public void EnableAssessment()
@@ -67,6 +72,7 @@ namespace Simulanis.ContentSDK.K12.Assessment
             MainCamera.transform.position = AssessmentCamTrans.position;
             MainCamera.transform.rotation = AssessmentCamTrans.rotation;
 
+            MainCamera.fieldOfView = 50;
           //  Heading.text = DataManager.StaticVariables.COLUMN_02;
         }
         public void DisableAssessment()
@@ -90,6 +96,8 @@ namespace Simulanis.ContentSDK.K12.Assessment
         {
             HomePanel.SetActive(true);
             UIController.Pause();
+            EventManager.Broadcast(EVENTS.CORRECT_HINDI);
+
         }
         public void DisableHome()
         {
@@ -98,6 +106,11 @@ namespace Simulanis.ContentSDK.K12.Assessment
 
         }
 
+        public void ShowPOV()
+        {
+            MainCamera.fieldOfView = POVSlider.value; // Directly set FOV to slider value
+            POV.text = MainCamera.fieldOfView.ToString("F2"); // Format for better readability
+        }
     }
 
 }

@@ -16,6 +16,10 @@ namespace Simulanis.ContentSDK.K12.UI
 
         public string[] videoNameEnglish;
         public string[] videoNameHindi;
+        private void Start()
+        {
+            Preparevideo();
+        }
         public void NextButtonHandler()
         {
             if (CurrentVideo < clipList.Length - 1)
@@ -36,16 +40,14 @@ namespace Simulanis.ContentSDK.K12.UI
 
         void Preparevideo()
         {
-            string lan = LanguageSelectionManager.CurrentLanguage.ToLower();
-           // lan = "hindi";
             videoPlayer.clip = clipList[CurrentVideo];
             videoPlayer.Play();
-            if (lan == "english")
+            if (DataManager.StaticVariables.IS_ENGLISH)
             {
                 videoName.text = videoNameEnglish[CurrentVideo];
 
             }
-            else if (lan == "hindi")
+            else
             {
                 videoName.text = videoNameHindi[CurrentVideo];
 
