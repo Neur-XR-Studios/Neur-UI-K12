@@ -18,6 +18,7 @@ namespace Simulanis.ContentSDK.K12.UI
         public List<Button> HomeYesButton;
         public UIAutomationController UIAutomationController;
 
+
         private void Awake()
         {
             if (UIAutomationController is null)

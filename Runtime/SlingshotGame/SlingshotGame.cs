@@ -41,6 +41,8 @@ namespace Simulanis.ContentSDK.K12.Assessment
         [Range(0.1f, 5f)]
         public float QuestionDelay = 0.5f;
         public AssessmentManager assessmentManager;
+
+        public bool IsSubmitted = false;
         private void Awake()
         {
             if(effectAudioSource is null)
@@ -162,13 +164,16 @@ namespace Simulanis.ContentSDK.K12.Assessment
         public void StartPull(int targetIndex)
         {
            if (loadedProjectile == null && !isPulling) return;
-
-             isPulling = true;
-            DisableButtons(false);
-            pullObject.transform.position = pullStartPosition;
-            loadedProjectile.transform.position = projectileSpawnPoint.position;
-            RotateSlingshotTowards(targetIndex);
-            StartCoroutine(PullProjectile(targetIndex));
+            if(!IsSubmitted)
+            {
+                isPulling = true;
+                DisableButtons(false);
+                pullObject.transform.position = pullStartPosition;
+                loadedProjectile.transform.position = projectileSpawnPoint.position;
+                RotateSlingshotTowards(targetIndex);
+                StartCoroutine(PullProjectile(targetIndex));
+            }
+            
         }
         // Coroutine to handle the pull and release sequence
         private IEnumerator PullProjectile(int targetIndex)
@@ -249,5 +254,10 @@ namespace Simulanis.ContentSDK.K12.Assessment
 
         }
 
+
+        public void SetSubmittedValue(bool value)
+        {
+            IsSubmitted = value;
+        }
     }
 }

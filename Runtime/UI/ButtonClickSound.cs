@@ -38,6 +38,8 @@ namespace Simulanis.ContentSDK.K12.UI
                     EffectAudioSource.Stop();
                 }
                 EffectAudioSource.PlayOneShot(audioClip);
+
+                EventManager.Broadcast(EVENTS.CORRECT_HINDI);
             }
         }
         public void PlayClickAudio()

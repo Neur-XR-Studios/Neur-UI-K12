@@ -11,10 +11,16 @@ namespace Simulanis.ContentSDK.K12.Assessment
         public AssessmentManager AssessmentManager;
         public SlingshotGame SlingshotGame;
         public bool isClicked = false;
-
+        private void Awake()
+        {
+            if(SlingshotGame is null)
+            {
+                SlingshotGame = FindObjectOfType<SlingshotGame>();
+            }
+        }
         private void OnMouseDown()
         {
-            if (!isClicked)
+            if (!isClicked && !SlingshotGame.IsSubmitted)
             {
                 isClicked = true;
                 SelecteAns();

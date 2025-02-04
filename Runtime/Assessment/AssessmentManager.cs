@@ -106,6 +106,7 @@ namespace Simulanis.ContentSDK.K12.Assessment
         private CancellationTokenSource cancellationTokenSource;
 
 
+
         #endregion
 
         #region GET Response Classes
@@ -689,7 +690,7 @@ namespace Simulanis.ContentSDK.K12.Assessment
                     num++;
                 }
             }
-       
+            EventManager.Broadcast(EVENTS.CORRECT_HINDI);
         }
         #endregion
 
