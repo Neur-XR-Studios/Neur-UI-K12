@@ -107,7 +107,7 @@ public class EnvironmentHandler : MonoBehaviour
         switch (sub)
         {
             case Subject.Science:
-                SetEnv(SciEnv, MathEnvMat, MathEnvMatHin, SciEnvBoard);
+                SetEnv(SciEnv, SciEnvMat, SciEnvMatHin, SciEnvBoard);
                 SetCFEnv(SciEnvMat,SciEnvMatHin);
                 SetAudioClip(SciClip);
                 break;
@@ -119,7 +119,7 @@ public class EnvironmentHandler : MonoBehaviour
                 break;
 
             case Subject.SocialScience:
-                SetEnv(SocialEnv, MathEnvMat, MathEnvMatHin, SocialEnvBoard);
+                SetEnv(SocialEnv, SocialEnvMat, SocialEnvMatHin, SocialEnvBoard);
                 SetCFEnv(SocialEnvMat,SocialEnvMatHin);
                 SetAudioClip(SocialClip);
                 break;

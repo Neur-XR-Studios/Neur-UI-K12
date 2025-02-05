@@ -3835,8 +3835,8 @@ MonoBehaviour:
   BoardScreen: {fileID: 675538746}
   Duster: {fileID: 1171259386}
   MathEnvMat: {fileID: 2100000, guid: 102402f7770a87d448f77c065b7b9050, type: 2}
-  SocialEnvMat: {fileID: 2100000, guid: 27ca505bcc65c6e40b58bfe14769e191, type: 2}
-  SciEnvMat: {fileID: 2100000, guid: 609e090d769a4574ba0c06977b56e038, type: 2}
+  SocialEnvMat: {fileID: 2100000, guid: 609e090d769a4574ba0c06977b56e038, type: 2}
+  SciEnvMat: {fileID: 2100000, guid: 27ca505bcc65c6e40b58bfe14769e191, type: 2}
   AssessEnvMat: {fileID: 2100000, guid: ce4864bbe247c3249997931599fce0b8, type: 2}
   MathEnvMatHin: {fileID: 2100000, guid: a0aa91ff6dc94bf4885c753e55ba5d4c, type: 2}
   SocialEnvMatHin: {fileID: 2100000, guid: c64daddcde719ca4da0b12cd4de4f16d, type: 2}
