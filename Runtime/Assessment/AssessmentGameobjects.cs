@@ -23,8 +23,6 @@ namespace Simulanis.ContentSDK.K12.Assessment
         public UIAutomationController UIController;
         public AssessmentTimer Timer;
         public Button mute, home;
-        public Slider POVSlider;
-        public TMP_Text POV;
         public Camera MainCamera;
         public Transform AssessmentCamTrans;
         private void Awake()
@@ -47,7 +45,6 @@ namespace Simulanis.ContentSDK.K12.Assessment
             }
             mute.onClick.AddListener(() => MuteUnMute(mute));
             home.onClick.AddListener(() => EnableHome());
-            POVSlider.onValueChanged.AddListener(_ => ShowPOV());
             Timer.ResetTimer();
         }
 
@@ -104,12 +101,6 @@ namespace Simulanis.ContentSDK.K12.Assessment
             HomePanel.SetActive(false);
             UIController.UnPause();
 
-        }
-
-        public void ShowPOV()
-        {
-            MainCamera.fieldOfView = POVSlider.value; // Directly set FOV to slider value
-            POV.text = MainCamera.fieldOfView.ToString("F2"); // Format for better readability
         }
     }
 

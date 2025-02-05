@@ -3774,6 +3774,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2620354981529726254}
+  - component: {fileID: 2620354980466422943}
   m_Layer: 0
   m_Name: Rooms
   m_TagString: Untagged
@@ -3798,6 +3799,53 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2620354980466422943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2620354981529726249}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cac9b9ce9c32837439afd37c0486fedc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentSubject: 0
+  MathEnv: {fileID: 524958327}
+  SocialEnv: {fileID: 1990810894}
+  SciEnv: {fileID: 1816551689}
+  MathEnvBoard:
+  - {fileID: 2058295023}
+  - {fileID: 2145961759}
+  - {fileID: 1791144906}
+  SocialEnvBoard:
+  - {fileID: 1329853596}
+  - {fileID: 205780387}
+  - {fileID: 899416756}
+  SciEnvBoard:
+  - {fileID: 812754980}
+  - {fileID: 1588221195}
+  - {fileID: 1336256503}
+  AssessEnvBoard:
+  - {fileID: 705558926871828280}
+  - {fileID: 4644361935836719010}
+  - {fileID: 7747416190427895359}
+  BoardBorder: {fileID: 976575045}
+  BoardScreen: {fileID: 675538746}
+  Duster: {fileID: 1171259386}
+  MathEnvMat: {fileID: 2100000, guid: 102402f7770a87d448f77c065b7b9050, type: 2}
+  SocialEnvMat: {fileID: 2100000, guid: 27ca505bcc65c6e40b58bfe14769e191, type: 2}
+  SciEnvMat: {fileID: 2100000, guid: 609e090d769a4574ba0c06977b56e038, type: 2}
+  AssessEnvMat: {fileID: 2100000, guid: ce4864bbe247c3249997931599fce0b8, type: 2}
+  MathEnvMatHin: {fileID: 2100000, guid: a0aa91ff6dc94bf4885c753e55ba5d4c, type: 2}
+  SocialEnvMatHin: {fileID: 2100000, guid: c64daddcde719ca4da0b12cd4de4f16d, type: 2}
+  SciEnvMatHin: {fileID: 2100000, guid: 986eb70276f25414582f6a699faa3e0c, type: 2}
+  AssessMatHin: {fileID: 2100000, guid: 0e82f90eb4266b04ba47243df44fde30, type: 2}
+  MathClip: {fileID: 8300000, guid: 1ba487421830e284e960b7d4b46d3ee1, type: 3}
+  SciClip: {fileID: 8300000, guid: 36ab9797836319749935c0ee31d4220c, type: 3}
+  SocialClip: {fileID: 8300000, guid: f7dffd629d7a0eb4cb56c534ee1f6c9f, type: 3}
+  BGSource: {fileID: 0}
 --- !u!1 &2737556983861036398
 GameObject:
   m_ObjectHideFlags: 0

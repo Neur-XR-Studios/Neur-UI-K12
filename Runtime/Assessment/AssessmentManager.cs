@@ -15,6 +15,12 @@ namespace Simulanis.ContentSDK.K12.Assessment
     public class AssessmentManager : MonoBehaviour
     {
         #region Header
+
+        [Space(20)]
+        [Header("----------------- Timer ------------------")]
+        [Space(20)]
+        public TMP_Text TimerText;
+        public Image TimerImage;
         [Space(20)]
         [Header("-----------------Button Images------------------")]
         [Space(20)]
@@ -186,6 +192,9 @@ namespace Simulanis.ContentSDK.K12.Assessment
             if (timer is null)
             {
                 timer = FindObjectOfType<AssessmentTimer>();
+
+                TimerText.color = Color.yellow;
+                TimerImage.color = Color.yellow;
             }
         }
 
@@ -532,6 +541,8 @@ namespace Simulanis.ContentSDK.K12.Assessment
             scoreCard.SetActive(true);
             InfoPanel.SetActive(true);
             AssessmentComplete.SetActive(true);
+            TimerText.color = Color.green;
+            TimerImage.color = Color.green;
         }
         void StopGame()
         {
