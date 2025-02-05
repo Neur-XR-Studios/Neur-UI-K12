@@ -10711,7 +10711,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnglishText: Assessment
-  HindiText: "\u0905\u0938\u0947\u0938\u092E\u0947\u0902\u091F"
+  HindiText: "\u092E\u0942\u0932\u094D\u092F\u093E\u0902\u0915\u0928"
 --- !u!114 &6722345542577849615
 MonoBehaviour:
   m_ObjectHideFlags: 0
