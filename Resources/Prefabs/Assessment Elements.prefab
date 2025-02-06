@@ -754,6 +754,7 @@ MonoBehaviour:
   PauseHomeButton: []
   HomeYesButton:
   - {fileID: 1071111176}
+  - {fileID: 1197695736}
   UIAutomationController: {fileID: 0}
 --- !u!1 &358055908
 GameObject:
