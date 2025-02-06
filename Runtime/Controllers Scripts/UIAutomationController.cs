@@ -9,6 +9,7 @@ namespace Simulanis.ContentSDK.K12.UI
     public class UIAutomationController : MonoBehaviour
     {
         #region Headers
+        public EnvironmentHandler environmentHandler;
         [Space(10)]
         [Header("----------------------CAMERA REFERENCEs--------------------")]
         [Space(10)]
@@ -154,6 +155,10 @@ namespace Simulanis.ContentSDK.K12.UI
             MainInfo_Text.text = string.Empty;
             ActivityHeading_Text.text = string.Empty;
             //Initialisation();
+            if(environmentHandler == null)
+            {
+                environmentHandler = FindObjectOfType<EnvironmentHandler>();
+            }
         }
         public void Initialisation()
         {
@@ -166,6 +171,7 @@ namespace Simulanis.ContentSDK.K12.UI
         {
             ResetAllMenu();
             LandingMenu_Obj.SetActive(true);
+            environmentHandler.enabled = true;
         }
         void EnableActivityMenu()
         {

@@ -454,18 +454,6 @@ MonoBehaviour:
           m_StringArgument: English
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
 --- !u!114 &456775454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1077,18 +1065,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: Hindi
           m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1494144781
 MonoBehaviour:
@@ -10931,6 +10907,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e23183cf1f9fb0b4bb9e2f0b7a0e4b24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  environmentHandler: {fileID: 0}
   LandingMenu_Obj: {fileID: 6722345542901367979}
   MainInfo_Text: {fileID: 8040982025722009269}
   Icon_Img: {fileID: 6722345544390928013}
@@ -15770,8 +15747,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 18
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
