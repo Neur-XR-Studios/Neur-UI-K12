@@ -69,6 +69,7 @@ namespace Simulanis.ContentSDK.K12.HindiFontReplacer
                     _DropDown.itemText.font = HindiBold;
                 }
             }
+            EventManager.Broadcast(EVENTS.CORRECT_HINDI);
         }
 
         /// <summary>

@@ -404,6 +404,7 @@ namespace Simulanis.ContentSDK.K12.UI
                 {
 
                     VoiceoverControllerScript.VoiceOverAudioSource.Pause();
+                    VoiceoverControllerScript.VoiceOverAudioSource.mute = true;
                     CFParent_Object.SetActive(true);
 
                     IsActivity = false;
@@ -417,6 +418,8 @@ namespace Simulanis.ContentSDK.K12.UI
                 {
 
                     VoiceoverControllerScript.VoiceOverAudioSource.UnPause();
+                    VoiceoverControllerScript.VoiceOverAudioSource.mute = false;
+
                     CFParent_Object.SetActive(false);
                     CfMenu_Obj.SetActive(false);
                     IsActivity = true;

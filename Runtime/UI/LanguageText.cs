@@ -29,6 +29,7 @@ namespace Simulanis.ContentSDK.K12.UI
         {
             UpdateLanguage();
             EventManager.AddHandler(EVENTS.CHANGE_LANGUAGE, UpdateLanguage);
+            EventManager.Broadcast(EVENTS.CORRECT_HINDI);
         }
         //unsubribed from SPAW event
         private void OnDisable()
